@@ -36,6 +36,16 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Deploying To Netlify
+
+This project includes a ready-to-use Netlify configuration in `netlify.toml`.
+
+- Build command: `pnpm exec ng build --configuration production`
+- Publish directory: `dist/tech-store-hexagonal/browser`
+- SPA fallback: all routes are redirected to `index.html`
+
+If you connect this repository to Netlify, those values will be picked up automatically.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

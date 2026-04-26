@@ -1,0 +1,11 @@
+[build]
+  command = "pnpm exec ng build --configuration production"
+  publish = "dist/tech-store-hexagonal/browser"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
