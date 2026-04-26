@@ -41,6 +41,21 @@
           <input id="cart-search" type="search" placeholder="Buscar productos...">
         </label>
 
+        <button
+          class="ts-icon-button ts-nav__menu-toggle"
+          type="button"
+          [attr.aria-expanded]="isMobileNavOpen()"
+          aria-controls="mobile-cart-nav-drawer"
+          [attr.aria-label]="isMobileNavOpen() ? 'Cerrar menú principal' : 'Abrir menú principal'"
+          (click)="toggleMobileNav()"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
+
         <button class="ts-icon-button" type="button" aria-label="Mi cuenta" (click)="openAuthModal()">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20 21a8 8 0 1 0-16 0"></path>
@@ -59,6 +74,52 @@
       </div>
     </div>
   </nav>
+
+  <button
+    class="ts-nav__drawer-backdrop"
+    [class.ts-nav__drawer-backdrop--open]="isMobileNavOpen()"
+    type="button"
+    tabindex="-1"
+    aria-label="Cerrar menú"
+    (click)="closeMobileNav()"
+  ></button>
+
+  <aside id="mobile-cart-nav-drawer" class="ts-nav__drawer" [class.ts-nav__drawer--open]="isMobileNavOpen()" aria-label="Menú principal móvil">
+    <div class="ts-nav__drawer-head">
+      <a class="ts-brand ts-brand--header ts-nav__drawer-brand" routerLink="/" aria-label="CompuGamer Trujillo, volver al inicio" (click)="closeMobileNav()">
+        <span class="ts-brand__mark ts-brand__mark--logo" aria-hidden="true">
+          <img class="ts-brand__icon" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="" loading="eager">
+        </span>
+        <span>
+          <span class="ts-brand__wordmark">
+            <span>COMPU</span><span>GAMER</span>
+          </span>
+          <span class="ts-brand__tagline">Trujillo</span>
+        </span>
+      </a>
+
+      <button class="ts-icon-button" type="button" aria-label="Cerrar menú principal" (click)="closeMobileNav()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6 6 12 12"></path>
+          <path d="m18 6-12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ts-nav__drawer-links">
+      @for (item of navItems; track item.label) {
+        @if (item.routerLink) {
+          <a class="ts-nav__drawer-link" [class.ts-nav__drawer-link--active]="item.active" [routerLink]="item.routerLink" (click)="closeMobileNav()">{{ item.label }}</a>
+        } @else {
+          <a class="ts-nav__drawer-link" [class.ts-nav__drawer-link--active]="item.active" [href]="item.href" (click)="closeMobileNav()">{{ item.label }}</a>
+        }
+      }
+    </div>
+
+    <div class="ts-nav__drawer-footer">
+      <a class="ts-nav__dashboard-button ts-nav__drawer-dashboard" routerLink="/catalogo" (click)="closeMobileNav()">Seguir comprando</a>
+    </div>
+  </aside>
 
   <main class="ts-main">
     <section class="ts-section ts-section--cart">

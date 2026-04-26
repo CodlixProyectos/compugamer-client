@@ -31,6 +31,7 @@ export class CartComponent {
   readonly whatsappDisplayNumber = '+51 991 185 552';
   readonly items = this.cartStore.items;
   readonly cartCount = this.cartStore.totalItems;
+  readonly isMobileNavOpen = signal(false);
   readonly subtotal = this.cartStore.subtotal;
   readonly isEmpty = this.cartStore.isEmpty;
   readonly isPaymentOpen = signal(false);
@@ -122,6 +123,14 @@ export class CartComponent {
 
   openAuthModal(): void {
     this.authModalStore.open('login');
+  }
+
+  toggleMobileNav(): void {
+    this.isMobileNavOpen.update((isOpen) => !isOpen);
+  }
+
+  closeMobileNav(): void {
+    this.isMobileNavOpen.set(false);
   }
 
   openPaymentFlow(): void {

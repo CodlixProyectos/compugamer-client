@@ -45,6 +45,7 @@ export class HomeComponent {
   readonly cartCount = this.cartStore.totalItems;
   readonly footerYear = 2024;
   readonly activeMainCoverSlide = signal(0);
+  readonly isMobileNavOpen = signal(false);
   readonly showCoverEditorOverlay = false;
   readonly spotlightProductIds = ['1', '2', '3', '5', '6'];
 
@@ -205,6 +206,14 @@ export class HomeComponent {
 
   openAuthModal(): void {
     this.authModalStore.open('login');
+  }
+
+  toggleMobileNav(): void {
+    this.isMobileNavOpen.update((isOpen) => !isOpen);
+  }
+
+  closeMobileNav(): void {
+    this.isMobileNavOpen.set(false);
   }
 
   addToCart(product: ProductCardViewModel): void {
