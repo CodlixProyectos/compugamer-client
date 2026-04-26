@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
-import { dashboardAuthGuard } from './dashboard/infrastructure/driving-adapters/features/dashboard-auth.guard';
 
 export const PUBLIC_ROUTES: Routes = [
   {
     path: 'dashboard',
-    canActivate: [dashboardAuthGuard],
     loadComponent: () =>
       import('./dashboard/infrastructure/driving-adapters/features/dashboard').then(
         (module) => module.DashboardComponent
