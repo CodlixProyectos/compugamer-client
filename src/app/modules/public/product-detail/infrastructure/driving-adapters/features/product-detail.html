@@ -1,0 +1,234 @@
+<div class="ts-home">
+  <div class="ts-topbar">
+    <div class="ts-shell ts-topbar__inner">
+      <p class="ts-topbar__item">Envíos gratis en compras superiores a $50</p>
+      <p class="ts-topbar__item">Atención al cliente</p>
+      <p class="ts-topbar__item">Soporte 24/7</p>
+    </div>
+  </div>
+
+  <nav class="ts-nav" aria-label="Principal">
+    <div class="ts-shell ts-nav__inner">
+      <a class="ts-brand ts-brand--header" routerLink="/" aria-label="CompuGamer Trujillo, volver al inicio">
+        <span class="ts-brand__mark ts-brand__mark--logo" aria-hidden="true">
+          <img class="ts-brand__icon" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="" loading="eager">
+        </span>
+        <span>
+          <span class="ts-brand__wordmark">
+            <span>COMPU</span><span>GAMER</span>
+          </span>
+          <span class="ts-brand__tagline">Trujillo</span>
+        </span>
+      </a>
+
+      <div class="ts-nav__links">
+        @for (item of navItems; track item.label) {
+          @if (item.routerLink) {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [routerLink]="item.routerLink">{{ item.label }}</a>
+          } @else {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [href]="item.href">{{ item.label }}</a>
+          }
+        }
+      </div>
+
+      <div class="ts-nav__actions">
+        <label class="ts-search" for="detail-search">
+          <span class="ts-visually-hidden">Buscar productos</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="detail-search" type="search" placeholder="Buscar productos...">
+        </label>
+
+        <button class="ts-icon-button" type="button" aria-label="Mi cuenta" (click)="openAuthModal()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21a8 8 0 1 0-16 0"></path>
+            <circle cx="12" cy="8" r="4"></circle>
+          </svg>
+        </button>
+
+        <a class="ts-icon-button" routerLink="/carrito" aria-label="Carrito de compras" data-cart-target="primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.5 7.5H8.2L6 4H3"></path>
+            <circle cx="9" cy="19" r="1.5"></circle>
+            <circle cx="18" cy="19" r="1.5"></circle>
+          </svg>
+          <span class="ts-icon-button__badge">{{ cartCount() }}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ts-main">
+    <section class="ts-section ts-section--product-detail">
+      <div class="ts-shell">
+        @if (detailProduct(); as product) {
+          <nav class="ts-detail-breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/">Inicio</a>
+            <span>/</span>
+            <a routerLink="/catalogo">Catálogo</a>
+            <span>/</span>
+            <span>{{ product.category }}</span>
+          </nav>
+
+          <div class="ts-product-detail">
+            <div class="ts-product-detail__media">
+              <div class="ts-product-detail__image-panel">
+                <img
+                  #detailProductImage
+                  [src]="product.imageUrl"
+                  [alt]="product.name"
+                  width="900"
+                  height="900"
+                  loading="eager"
+                  decoding="async"
+                >
+              </div>
+
+              @if (product.quickSpecs.length) {
+                <div class="ts-product-card__specs ts-product-detail__chips">
+                  @for (spec of product.quickSpecs; track spec) {
+                    <span class="ts-product-card__spec">{{ spec }}</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="ts-product-detail__content">
+              <p class="ts-section-heading__eyebrow">{{ product.category }}</p>
+              <h1 class="ts-product-detail__title">{{ product.name }}</h1>
+              <p class="ts-product-detail__brand">{{ product.brand }}</p>
+
+              <div class="ts-product-card__rating" aria-label="4 de 5 estrellas">
+                <span class="ts-product-card__stars" aria-hidden="true">
+                  ★★★★<span class="ts-product-card__stars-off">★</span>
+                </span>
+                <span class="ts-product-card__reviews">({{ product.reviewCount | number }})</span>
+              </div>
+
+              <p class="ts-product-detail__description">{{ product.description }}</p>
+
+              <div class="ts-product-detail__pricing">
+                <strong class="ts-product-detail__price">${{ product.price | number: '1.2-2' }}</strong>
+                @if (product.oldPrice != null) {
+                  <span class="ts-product-detail__old-price">${{ product.oldPrice | number: '1.2-2' }}</span>
+                }
+                @if (product.discountValue != null) {
+                  <p class="ts-product-detail__saving">Ahorra ${{ product.discountValue | number: '1.0-0' }}</p>
+                }
+              </div>
+
+              <div class="ts-product-detail__actions">
+                <button class="ts-button ts-button--primary" type="button" (click)="addCurrentProductToCart()">Agregar al carrito</button>
+                <a class="ts-button ts-button--secondary" routerLink="/catalogo">Volver al catálogo</a>
+              </div>
+
+              <div class="ts-product-detail__support-grid">
+                @for (item of supportHighlights; track item.title) {
+                  <article class="ts-product-detail__support-item">
+                    <span class="ts-product-detail__support-icon" [innerHTML]="item.icon" aria-hidden="true"></span>
+                    <div>
+                      <p class="ts-product-detail__support-title">{{ item.title }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+            </div>
+          </div>
+
+          @if (relatedProducts().length) {
+            <section class="ts-product-detail__related" aria-labelledby="related-products-title">
+              <div class="ts-section-heading ts-section-heading--split ts-section-heading--compact">
+                <div>
+                  <p class="ts-section-heading__eyebrow">Misma categoría</p>
+                  <h2 class="ts-section-heading__title" id="related-products-title">También te puede interesar</h2>
+                </div>
+
+                <a class="ts-link-action" routerLink="/catalogo">Volver al catálogo completo</a>
+              </div>
+
+              <div class="ts-home-spotlight__grid">
+                @for (relatedProduct of relatedProducts(); track relatedProduct.id) {
+                  <app-product-card
+                    [product]="relatedProduct"
+                    variant="spotlight"
+                    [showBadge]="false"
+                    actionKind="button"
+                    [contentRouterLink]="['/catalogo', relatedProduct.id]"
+                    actionLabelPrefix="Agregar"
+                    actionAriaSuffix="al carrito"
+                    (actionTriggered)="addToCart($event)"
+                  />
+                }
+              </div>
+            </section>
+          }
+        } @else {
+          <div class="ts-product-detail__empty">
+            <p class="ts-empty-state">No encontramos el producto solicitado. Revisa el catálogo para seguir explorando.</p>
+            <a class="ts-button ts-button--secondary" routerLink="/catalogo">Volver al catálogo</a>
+          </div>
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="ts-footer" id="contacto">
+    <div class="ts-shell ts-footer__grid">
+      <div class="ts-footer__brand-block">
+        <a class="ts-brand ts-brand--footer" routerLink="/" aria-label="CompuGamer Trujillo, volver al inicio">
+          <img class="ts-brand__logo" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="CompuGamer Trujillo" loading="lazy">
+        </a>
+
+        <p class="ts-footer__eyebrow">CompuGamer Trujillo</p>
+
+        <p class="ts-footer__text">
+          Tu tienda online de tecnología. Los mejores productos al mejor precio.
+        </p>
+
+        <div class="ts-footer__contact-card">
+          <p class="ts-footer__contact-title">Atención directa</p>
+          <p class="ts-footer__contact-line">JR. Diego de Almagro N° 651, tercer piso, Trujillo</p>
+          <p class="ts-footer__contact-line">WhatsApp: 934 824 168 · 967 545 216</p>
+          <p class="ts-footer__contact-line">Lun a sáb · 9:00 am a 8:00 pm</p>
+        </div>
+
+        <div class="ts-footer__socials">
+          @for (social of socialLinks; track social.label) {
+            <button class="ts-social" type="button" [attr.aria-label]="social.label">{{ social.short }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="ts-footer__newsletter-block">
+        <p class="ts-footer__heading">Suscríbete a nuestro newsletter</p>
+        <p class="ts-footer__text">Recibe ofertas exclusivas, novedades y más.</p>
+
+        <div class="ts-newsletter">
+          <label class="ts-visually-hidden" for="detail-newsletter-email">Correo electrónico</label>
+          <input id="detail-newsletter-email" type="email" placeholder="Tu correo electrónico">
+          <button class="ts-button ts-button--primary" type="button">Suscribirme</button>
+        </div>
+      </div>
+
+      @for (section of footerSections; track section.title) {
+        <div class="ts-footer__nav-block">
+          <p class="ts-footer__heading">{{ section.title }}</p>
+          <ul class="ts-footer__links">
+            @for (link of section.links; track link.label) {
+              <li><a class="ts-footer__link" [href]="link.href">{{ link.label }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="ts-footer__bottom">
+      <div class="ts-shell ts-footer__bottom-inner">
+        <p class="ts-footer__copy">© {{ footerYear }} CompuGamer Trujillo. Todos los derechos reservados.</p>
+        <p class="ts-footer__credit">Hecho y elaborado por Codliyp · JCV Code · ETC</p>
+      </div>
+    </div>
+  </footer>
+</div>

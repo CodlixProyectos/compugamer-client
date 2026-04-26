@@ -1,0 +1,348 @@
+:host {
+  display: block;
+}
+
+.ts-payment-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.24);
+  backdrop-filter: blur(5px);
+}
+
+.ts-payment-modal__dialog {
+  width: min(880px, 100%);
+  max-height: calc(100vh - 2.5rem);
+  overflow: auto;
+  border-radius: 26px;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.24);
+}
+
+.ts-payment-sheet {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #dbe7f3;
+  border-radius: 26px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.ts-payment-sheet__layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.ts-payment-sheet__aside {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.ts-payment-sheet__content {
+  display: grid;
+  min-width: 0;
+  align-items: start;
+  justify-items: start;
+}
+
+.ts-payment-sheet__summary {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem;
+  border: 1px solid #dbe7f3;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.ts-payment-sheet__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ts-payment-sheet__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #0f172a;
+}
+
+.ts-payment-sheet__subtitle,
+.ts-payment-sheet__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.ts-payment-sheet__amount {
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.ts-payment-sheet__action {
+  min-height: 34px;
+  padding: 0 0.85rem;
+}
+
+.ts-payment-method-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.ts-payment-method {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid #d9e2ef;
+  border-radius: 14px;
+  background: #f8fafc;
+  text-align: left;
+  color: #0f172a;
+  transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ts-payment-method:hover {
+  transform: translateY(-1px);
+  border-color: #93c5fd;
+}
+
+.ts-payment-method--active {
+  border-color: #2563eb;
+  background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 100%);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.08);
+}
+
+.ts-payment-method__label {
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.ts-payment-method__description {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: #64748b;
+}
+
+.ts-payment-card,
+.ts-payment-confirmed {
+  display: grid;
+  gap: 0.85rem;
+  width: min(100%, 560px);
+  padding: 0.95rem;
+  border: 1px solid #dbe7f3;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.ts-payment-card {
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.ts-payment-card--with-qr {
+  width: 100%;
+  grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
+}
+
+.ts-payment-card__qr img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid #dbe5f2;
+  background: #ffffff;
+}
+
+.ts-payment-card__content {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.ts-payment-card__title,
+.ts-payment-confirmed__title {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ts-payment-card__text,
+.ts-payment-confirmed__text {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.ts-payment-card__meta {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.ts-payment-card__meta div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.ts-payment-card__meta span,
+.ts-payment-confirmed__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b45309;
+}
+
+.ts-payment-card__meta strong {
+  font-size: 0.83rem;
+  color: #0f172a;
+}
+
+.ts-payment-card__steps {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.35rem;
+  color: #334155;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.ts-payment-card__note {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.ts-payment-upload {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.8rem;
+  border: 1px dashed #bfd3f3;
+  border-radius: 14px;
+  background: #f8fbff;
+}
+
+.ts-payment-upload__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ts-payment-upload__label {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ts-payment-upload__hint,
+.ts-payment-upload__file-meta,
+.ts-payment-upload__placeholder,
+.ts-payment-upload__error {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.ts-payment-upload__hint,
+.ts-payment-upload__file-meta {
+  color: #64748b;
+}
+
+.ts-payment-upload__dropzone {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #d4def0;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.ts-payment-upload__input {
+  display: none;
+}
+
+.ts-payment-upload__file-name,
+.ts-payment-upload__placeholder {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ts-payment-upload__clear {
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ts-payment-upload__error {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.ts-payment-confirmed {
+  background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+  border-color: #bbf7d0;
+}
+
+.ts-payment-confirmed__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+:host ::ng-deep .ts-button--whatsapp,
+.ts-button--whatsapp {
+  background: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 12px 22px rgba(34, 197, 94, 0.18);
+}
+
+@media (max-width: 720px) {
+  .ts-payment-modal {
+    padding: 0.75rem;
+  }
+
+  .ts-payment-modal__dialog {
+    max-height: calc(100vh - 1.5rem);
+    border-radius: 22px;
+  }
+
+  .ts-payment-sheet {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+
+  .ts-payment-sheet__header,
+  .ts-payment-sheet__layout {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .ts-payment-card {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-payment-card__qr {
+    max-width: 150px;
+  }
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#3a1f00"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff0b0"/>
+      <stop offset="45%" stop-color="#ffbf1f"/>
+      <stop offset="100%" stop-color="#ff7a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <circle cx="32" cy="28" r="18" fill="none" stroke="url(#accent)" stroke-width="4"/>
+  <path d="M22 20 L32 12 L42 20 L38 20 L32 16 L26 20 Z" fill="#050505"/>
+  <rect x="21" y="24" width="22" height="18" rx="8" fill="#0e0e10"/>
+  <circle cx="28" cy="32" r="4" fill="#f8f2e7"/>
+  <circle cx="36" cy="32" r="4" fill="#f8f2e7"/>
+  <circle cx="28" cy="32" r="2" fill="#ff9e00"/>
+  <circle cx="36" cy="32" r="2" fill="#ff9e00"/>
+  <path d="M20 28 H24" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40 28 H44" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+  <path d="M24 40 H40" stroke="#ffb300" stroke-width="4" stroke-linecap="round"/>
+  <text x="32" y="56" text-anchor="middle" font-size="12" font-weight="900" font-family="Poppins, Arial, sans-serif" fill="#ffbf1f">CG</text>
+</svg>

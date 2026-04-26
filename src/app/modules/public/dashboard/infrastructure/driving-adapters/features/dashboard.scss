@@ -1,0 +1,1305 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.ts-dashboard-page {
+  --ts-dashboard-primary: #f59e0b;
+  --ts-dashboard-primary-dark: #d97706;
+  --ts-dashboard-ink: #0f172a;
+  --ts-dashboard-muted: #64748b;
+  --ts-dashboard-border: #dbe4f0;
+  --ts-dashboard-surface: #ffffff;
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 24%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+  color: var(--ts-dashboard-ink);
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+.ts-dashboard-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ts-dashboard-page button {
+  font: inherit;
+}
+
+.ts-dashboard {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.ts-dashboard__layout {
+  display: grid;
+  grid-template-columns: clamp(220px, 18vw, 280px) minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.ts-dashboard__section-head,
+.ts-dashboard__store-head,
+.ts-dashboard__queue-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ts-dashboard__header-card {
+  gap: 1rem;
+}
+
+.ts-dashboard__sidebar,
+.ts-dashboard__workspace {
+  min-width: 0;
+}
+
+.ts-dashboard__sidebar {
+  position: sticky;
+  top: 0;
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-height: 100vh;
+  padding: 1rem 0.75rem;
+  border: 0;
+  border-right: 1px solid rgba(245, 158, 11, 0.18);
+  border-radius: 0 28px 28px 0;
+  background:
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.18), transparent 26%),
+    linear-gradient(180deg, #0f172a 0%, #111827 52%, #172033 100%);
+  color: #f8fafc;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
+}
+
+.ts-dashboard__sidebar-head,
+.ts-dashboard__session-card,
+.ts-dashboard__sidebar-footer,
+.ts-dashboard__header-actions {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.ts-dashboard__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ts-dashboard__brand-mark,
+.ts-dashboard__session-avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.ts-dashboard__brand-mark {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: #111827;
+  font-weight: 900;
+}
+
+.ts-dashboard__brand strong,
+.ts-dashboard__section-title,
+.ts-dashboard__action-title,
+.ts-dashboard__store-name,
+.ts-dashboard__session-name {
+  display: block;
+  margin: 0;
+  font-weight: 800;
+}
+
+.ts-dashboard__brand small,
+.ts-dashboard__workspace-text,
+.ts-dashboard__metric-detail,
+.ts-dashboard__action-text,
+.ts-dashboard__store-city,
+.ts-dashboard__store-meta,
+.ts-dashboard__alert-card p,
+.ts-dashboard__session-email,
+.ts-dashboard__sidebar-hint,
+.ts-dashboard__queue-card p {
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__session-card {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ts-dashboard__session-name {
+  font-size: 0.92rem;
+  line-height: 1.15;
+}
+
+.ts-dashboard__session-email {
+  margin: 0.08rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.2;
+}
+
+.ts-dashboard__session-avatar {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fbbf24;
+  font-weight: 900;
+}
+
+.ts-dashboard__eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fbbf24;
+}
+
+.ts-dashboard__sidebar-nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ts-dashboard__sidebar-link,
+.ts-dashboard__ghost-link,
+.ts-dashboard__logout {
+  width: 100%;
+  border-radius: 18px;
+}
+
+.ts-dashboard__sidebar-link {
+  padding: 0.7rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ts-dashboard__sidebar-link--active {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(249, 115, 22, 0.12) 100%);
+}
+
+.ts-dashboard__sidebar-label,
+.ts-dashboard__section-title--hero {
+  display: block;
+  margin: 0;
+}
+
+.ts-dashboard__sidebar-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.ts-dashboard__sidebar-hint {
+  margin-top: 0.18rem;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: rgba(226, 232, 240, 0.72);
+}
+
+.ts-dashboard__ghost-link,
+.ts-dashboard__logout {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.ts-dashboard__ghost-link {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+}
+
+.ts-dashboard__logout {
+  border: 0;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: #111827;
+  cursor: pointer;
+}
+
+.ts-dashboard__workspace {
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
+  min-height: 100vh;
+  padding: 12px 12px 20px 0;
+}
+
+.ts-dashboard__header-card,
+.ts-dashboard__section {
+  padding: 1.25rem;
+  border: 1px solid var(--ts-dashboard-border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+}
+
+.ts-dashboard__header-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ts-dashboard__section-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__section-title--hero {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+}
+
+.ts-dashboard__workspace-text {
+  max-width: 60ch;
+  margin: 0.65rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.ts-dashboard__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-content: start;
+}
+
+.ts-dashboard__button {
+  min-height: 46px;
+  padding: 0 1.1rem;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.ts-dashboard__button--primary {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: #111827;
+}
+
+.ts-dashboard__button--secondary {
+  border-color: #d7e2f1;
+  background: #ffffff;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__metrics-grid,
+.ts-dashboard__action-grid,
+.ts-dashboard__store-grid,
+.ts-dashboard__list-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.ts-dashboard__metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.ts-dashboard__action-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.ts-dashboard__store-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.ts-dashboard__list-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.ts-dashboard__metric,
+.ts-dashboard__action-card,
+.ts-dashboard__store-card,
+.ts-dashboard__alert-card,
+.ts-dashboard__queue-card {
+  border-radius: 20px;
+}
+
+.ts-dashboard__metric {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.ts-dashboard__metric--amber { border-color: rgba(245, 158, 11, 0.35); }
+.ts-dashboard__metric--blue { border-color: rgba(96, 165, 250, 0.35); }
+.ts-dashboard__metric--green { border-color: rgba(16, 185, 129, 0.35); }
+.ts-dashboard__metric--slate { border-color: rgba(148, 163, 184, 0.3); }
+
+.ts-dashboard__metric-label {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__metric-value {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+}
+
+.ts-dashboard__metric-detail {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__subsection-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ts-dashboard__subsection-button {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #dbe4f0;
+  background: #f8fafc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ts-dashboard__subsection-button--active {
+  border-color: rgba(37, 99, 235, 0.25);
+  background: linear-gradient(180deg, #ffffff 0%, #eef5ff 100%);
+}
+
+.ts-dashboard__subsection-label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__subsection-hint {
+  display: block;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__landing-preview-note {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__landing-preview-shell {
+  margin-top: 1rem;
+  position: relative;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  overflow: hidden;
+}
+
+.ts-dashboard__landing-preview {
+  background: #ffffff;
+}
+
+.ts-dashboard__home-preview-app {
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ts-dashboard__landing-hotspot-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ts-dashboard__landing-hotspot-shell {
+  position: absolute;
+  top: calc(34px + 72px + 0.85rem);
+  left: 50%;
+  width: min(1520px, calc(100% - (clamp(24px, 3vw, 64px) * 2)));
+  transform: translateX(-50%);
+}
+
+.ts-dashboard__landing-hotspot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.ts-dashboard__landing-hotspot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  height: clamp(180px, 18vw, 290px);
+  padding: 1rem;
+  border: 2px dashed rgba(245, 158, 11, 0.8);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.28) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.ts-dashboard__landing-hotspot--wide {
+  grid-column: 1 / -1;
+  height: auto;
+  aspect-ratio: 1600 / 700;
+}
+
+.ts-dashboard__landing-hotspot:hover {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(15, 23, 42, 0.34) 100%);
+}
+
+.ts-dashboard__landing-hotspot-pill,
+.ts-dashboard__landing-hotspot-copy {
+  width: fit-content;
+  max-width: min(100%, 260px);
+  color: #ffffff;
+}
+
+.ts-dashboard__landing-hotspot-pill {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.ts-dashboard__landing-hotspot-copy {
+  margin-top: auto;
+  padding: 0.7rem 0.8rem;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.ts-dashboard__landing-hotspot input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ts-dashboard__landing-control-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.ts-dashboard__landing-control {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.ts-dashboard__landing-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.ts-dashboard__landing-meta span {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.ts-dashboard__landing-upload {
+  min-height: 40px;
+  padding: 0 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dbe4f0;
+  background: #f8fafc;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ts-dashboard-ink);
+  cursor: pointer;
+}
+
+.ts-dashboard__landing-upload input {
+  display: none;
+}
+
+.ts-dashboard__chart-grid,
+.ts-dashboard__overview-grid,
+.ts-dashboard__inventory-grid,
+.ts-dashboard__inventory-movement-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.ts-dashboard__chart-grid {
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+}
+
+.ts-dashboard__overview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ts-dashboard__inventory-grid {
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 1fr);
+}
+
+.ts-dashboard__inventory-movement-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.ts-dashboard__chart-card {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.ts-dashboard__chart-head,
+.ts-dashboard__panel-head,
+.ts-dashboard__goal-top,
+.ts-dashboard__channel-top,
+.ts-dashboard__mini-action-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.ts-dashboard__chart-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__chart-summary {
+  display: grid;
+  gap: 0.12rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.ts-dashboard__chart-summary strong,
+.ts-dashboard__channel-copy strong,
+.ts-dashboard__goal-copy strong,
+.ts-dashboard__mini-action strong,
+.ts-dashboard__product-copy strong,
+.ts-dashboard__product-revenue {
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__chart-summary strong {
+  font-size: 1.05rem;
+}
+
+.ts-dashboard__chart-summary span,
+.ts-dashboard__channel-copy span,
+.ts-dashboard__goal-copy span,
+.ts-dashboard__mini-action p,
+.ts-dashboard__product-copy p,
+.ts-dashboard__trend-amount,
+.ts-dashboard__trend-footer span,
+.ts-dashboard__product-units {
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__chart-summary span,
+.ts-dashboard__channel-copy span,
+.ts-dashboard__goal-copy span,
+.ts-dashboard__product-copy p,
+.ts-dashboard__product-units,
+.ts-dashboard__mini-action p {
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.ts-dashboard__trend-bars {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+  min-height: 215px;
+}
+
+.ts-dashboard__trend-point {
+  display: grid;
+  gap: 0.42rem;
+  align-items: end;
+}
+
+.ts-dashboard__trend-amount {
+  margin: 0;
+  font-size: 0.72rem;
+}
+
+.ts-dashboard__trend-column {
+  display: flex;
+  align-items: end;
+  height: 148px;
+  padding: 0.2rem;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef5ff 100%);
+}
+
+.ts-dashboard__trend-fill {
+  display: block;
+  width: 100%;
+  min-height: 16px;
+  background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%);
+}
+
+.ts-dashboard__trend-footer {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.ts-dashboard__trend-footer strong {
+  font-size: 0.78rem;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__trend-footer span {
+  font-size: 0.68rem;
+}
+
+.ts-dashboard__channel-list,
+.ts-dashboard__goal-list,
+.ts-dashboard__product-list,
+.ts-dashboard__mini-action-list,
+.ts-dashboard__inventory-category-list,
+.ts-dashboard__inventory-restock-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.ts-dashboard__channel-item,
+.ts-dashboard__goal-item {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ts-dashboard__channel-copy,
+.ts-dashboard__goal-copy,
+.ts-dashboard__product-copy {
+  min-width: 0;
+}
+
+.ts-dashboard__channel-copy strong,
+.ts-dashboard__goal-copy strong,
+.ts-dashboard__product-copy strong,
+.ts-dashboard__mini-action strong {
+  display: block;
+  font-size: 0.82rem;
+}
+
+.ts-dashboard__channel-track,
+.ts-dashboard__goal-track {
+  height: 10px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.ts-dashboard__channel-fill,
+.ts-dashboard__goal-fill {
+  display: block;
+  height: 100%;
+}
+
+.ts-dashboard__goal-value {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--ts-dashboard-ink);
+  text-align: right;
+}
+
+.ts-dashboard__overview-panel {
+  gap: 0.9rem;
+}
+
+.ts-dashboard__product-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid #eef2ff;
+}
+
+.ts-dashboard__product-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ts-dashboard__product-copy p,
+.ts-dashboard__mini-action p {
+  margin: 0.18rem 0 0;
+}
+
+.ts-dashboard__product-metrics {
+  display: grid;
+  justify-items: end;
+  gap: 0.15rem;
+}
+
+.ts-dashboard__mini-action {
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.ts-dashboard__inventory-panel {
+  gap: 0.9rem;
+}
+
+.ts-dashboard__inventory-category-item,
+.ts-dashboard__inventory-restock-item,
+.ts-dashboard__inventory-movement-item {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ts-dashboard__inventory-category-top,
+.ts-dashboard__inventory-restock-top,
+.ts-dashboard__inventory-movement-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.ts-dashboard__inventory-category-copy,
+.ts-dashboard__inventory-restock-copy,
+.ts-dashboard__inventory-movement-copy {
+  min-width: 0;
+}
+
+.ts-dashboard__inventory-category-copy strong,
+.ts-dashboard__inventory-restock-copy strong,
+.ts-dashboard__inventory-movement-copy strong {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__inventory-category-copy span,
+.ts-dashboard__inventory-restock-copy p,
+.ts-dashboard__inventory-restock-meta span,
+.ts-dashboard__inventory-movement-copy p,
+.ts-dashboard__inventory-copy,
+.ts-dashboard__inventory-cell span {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__inventory-restock-copy p,
+.ts-dashboard__inventory-movement-copy p {
+  margin: 0.18rem 0 0;
+}
+
+.ts-dashboard__inventory-percent {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__inventory-bar-track {
+  height: 10px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.ts-dashboard__inventory-bar-fill {
+  display: block;
+  height: 100%;
+}
+
+.ts-dashboard__inventory-restock-item {
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.ts-dashboard__inventory-restock-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ts-dashboard__inventory-priority,
+.ts-dashboard__inventory-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.ts-dashboard__inventory-priority--high,
+.ts-dashboard__inventory-status--critical {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+.ts-dashboard__inventory-priority--medium,
+.ts-dashboard__inventory-status--low {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+}
+
+.ts-dashboard__inventory-priority--low,
+.ts-dashboard__inventory-status--stable {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.ts-dashboard__inventory-table-wrap {
+  margin-top: 1rem;
+  overflow: auto;
+}
+
+.ts-dashboard__inventory-table {
+  min-width: 960px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.ts-dashboard__inventory-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.7fr) repeat(7, minmax(90px, 1fr));
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid #eef2ff;
+}
+
+.ts-dashboard__inventory-row--head {
+  border-top: 0;
+  background: #f8fafc;
+}
+
+.ts-dashboard__inventory-row--head span {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__inventory-cell {
+  min-width: 0;
+}
+
+.ts-dashboard__inventory-cell strong {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__inventory-cell--product strong {
+  margin-bottom: 0.12rem;
+}
+
+.ts-dashboard__inventory-movement-item p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.ts-dashboard__action-card,
+.ts-dashboard__chart-card,
+.ts-dashboard__store-card,
+.ts-dashboard__alert-card,
+.ts-dashboard__queue-card {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.ts-dashboard__action-badge,
+.ts-dashboard__store-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.ts-dashboard__action-badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.ts-dashboard__action-title {
+  margin-top: 0.75rem;
+  font-size: 1.02rem;
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__action-text {
+  margin: 0.55rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__store-grid {
+  margin-top: 1rem;
+}
+
+.ts-dashboard__store-status {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+}
+
+.ts-dashboard__store-city {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__store-meta {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.95rem;
+}
+
+.ts-dashboard__store-meta p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__queue-card {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.ts-dashboard__queue-card strong,
+.ts-dashboard__queue-card p strong {
+  color: var(--ts-dashboard-ink);
+}
+
+.ts-dashboard__queue-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.ts-dashboard__queue-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.ts-dashboard__alert-list {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.ts-dashboard__alert-card {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.ts-dashboard__alert-dot {
+  width: 12px;
+  height: 12px;
+  margin-top: 0.35rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+}
+
+.ts-dashboard__alert-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ts-dashboard-muted);
+}
+
+.ts-dashboard__sidebar,
+.ts-dashboard__brand-mark,
+.ts-dashboard__session-avatar,
+.ts-dashboard__session-card,
+.ts-dashboard__sidebar-link,
+.ts-dashboard__ghost-link,
+.ts-dashboard__logout,
+.ts-dashboard__header-card,
+.ts-dashboard__section,
+.ts-dashboard__button,
+.ts-dashboard__metric,
+.ts-dashboard__landing-preview-shell,
+.ts-dashboard__landing-control,
+.ts-dashboard__chart-card,
+.ts-dashboard__action-card,
+.ts-dashboard__store-card,
+.ts-dashboard__alert-card,
+.ts-dashboard__queue-card,
+.ts-dashboard__trend-column,
+.ts-dashboard__trend-fill,
+.ts-dashboard__channel-track,
+.ts-dashboard__channel-fill,
+.ts-dashboard__subsection-button,
+.ts-dashboard__landing-card,
+.ts-dashboard__landing-media,
+.ts-dashboard__landing-upload,
+.ts-dashboard__inventory-bar-track,
+.ts-dashboard__inventory-bar-fill,
+.ts-dashboard__inventory-table,
+.ts-dashboard__inventory-restock-item,
+.ts-dashboard__inventory-priority,
+.ts-dashboard__inventory-status,
+.ts-dashboard__goal-track,
+.ts-dashboard__goal-fill,
+.ts-dashboard__mini-action,
+.ts-dashboard__action-badge,
+.ts-dashboard__store-status,
+.ts-dashboard__queue-status,
+.ts-dashboard__alert-dot {
+  border-radius: 0;
+}
+
+@media (max-width: 1080px) {
+  .ts-dashboard__layout,
+  .ts-dashboard__section-head,
+  .ts-dashboard__header-card,
+  .ts-dashboard__store-head,
+  .ts-dashboard__queue-top,
+  .ts-dashboard__chart-head,
+  .ts-dashboard__panel-head,
+  .ts-dashboard__goal-top,
+  .ts-dashboard__channel-top,
+  .ts-dashboard__mini-action-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ts-dashboard__chart-grid,
+  .ts-dashboard__overview-grid,
+  .ts-dashboard__inventory-grid,
+  .ts-dashboard__landing-control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-dashboard__landing-hotspot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-dashboard__landing-hotspot,
+  .ts-dashboard__landing-hotspot--wide {
+    grid-column: auto;
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .ts-dashboard__subsection-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-dashboard__chart-summary {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .ts-dashboard__layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .ts-dashboard__sidebar {
+    padding: 0.85rem 0.65rem;
+  }
+
+  .ts-dashboard__brand-mark,
+  .ts-dashboard__session-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ts-dashboard__session-card,
+  .ts-dashboard__sidebar-link {
+    padding: 0.55rem;
+  }
+
+  .ts-dashboard__sidebar-label {
+    font-size: 0.8rem;
+  }
+
+  .ts-dashboard__sidebar-hint {
+    font-size: 0.68rem;
+  }
+
+  .ts-dashboard__workspace {
+    padding: 10px 10px 20px 0;
+  }
+
+  .ts-dashboard__inventory-category-top,
+  .ts-dashboard__inventory-restock-top,
+  .ts-dashboard__inventory-restock-meta,
+  .ts-dashboard__inventory-movement-top,
+  .ts-dashboard__landing-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 820px) {
+  .ts-dashboard {
+    width: 100%;
+  }
+
+  .ts-dashboard__layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .ts-dashboard__sidebar {
+    position: static;
+    min-height: auto;
+    padding: 0.85rem;
+    border-right: 0;
+  }
+
+  .ts-dashboard__workspace {
+    min-height: auto;
+    padding: 0 10px 20px;
+  }
+
+  .ts-dashboard__landing-hotspot-layer {
+    display: none;
+  }
+
+  .ts-dashboard__trend-bars {
+    gap: 0.45rem;
+    min-height: 190px;
+  }
+
+  .ts-dashboard__trend-column {
+    height: 128px;
+  }
+
+  .ts-dashboard__header-actions {
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 560px) {
+  .ts-dashboard__sidebar {
+    gap: 0.6rem;
+    padding: 0.7rem;
+  }
+
+  .ts-dashboard__brand {
+    gap: 0.55rem;
+  }
+
+  .ts-dashboard__brand-mark,
+  .ts-dashboard__session-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ts-dashboard__session-card,
+  .ts-dashboard__sidebar-link {
+    padding: 0.55rem;
+  }
+
+  .ts-dashboard__sidebar-label {
+    font-size: 0.78rem;
+  }
+
+  .ts-dashboard__sidebar-hint,
+  .ts-dashboard__session-email {
+    font-size: 0.66rem;
+  }
+
+  .ts-dashboard__ghost-link,
+  .ts-dashboard__logout {
+    min-height: 36px;
+    font-size: 0.75rem;
+  }
+
+  .ts-dashboard__trend-bars {
+    gap: 0.35rem;
+    min-height: 168px;
+  }
+
+  .ts-dashboard__trend-column {
+    height: 104px;
+  }
+
+  .ts-dashboard__trend-amount,
+  .ts-dashboard__trend-footer span,
+  .ts-dashboard__goal-copy span,
+  .ts-dashboard__channel-copy span,
+  .ts-dashboard__product-copy p,
+  .ts-dashboard__product-units,
+  .ts-dashboard__mini-action p {
+    font-size: 0.66rem;
+  }
+
+  .ts-dashboard__trend-footer strong,
+  .ts-dashboard__channel-copy strong,
+  .ts-dashboard__goal-copy strong,
+  .ts-dashboard__product-copy strong,
+  .ts-dashboard__mini-action strong,
+  .ts-dashboard__goal-value {
+    font-size: 0.76rem;
+  }
+}

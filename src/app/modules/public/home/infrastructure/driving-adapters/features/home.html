@@ -1,0 +1,359 @@
+<div class="ts-home">
+  <div class="ts-topbar">
+    <div class="ts-shell ts-topbar__inner">
+      <p class="ts-topbar__item">Envíos gratis en compras superiores a $50</p>
+      <p class="ts-topbar__item">Atención al cliente</p>
+      <p class="ts-topbar__item">Soporte 24/7</p>
+    </div>
+  </div>
+
+  <nav class="ts-nav" aria-label="Principal">
+    <div class="ts-shell ts-nav__inner">
+      <a class="ts-brand ts-brand--header" href="#inicio" aria-label="CompuGamer Trujillo, volver al inicio">
+        <span class="ts-brand__mark ts-brand__mark--logo" aria-hidden="true">
+          <img class="ts-brand__icon" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="" loading="eager">
+        </span>
+        <span>
+          <span class="ts-brand__wordmark">
+            <span>COMPU</span><span>GAMER</span>
+          </span>
+          <span class="ts-brand__tagline">Trujillo</span>
+        </span>
+      </a>
+
+      <div class="ts-nav__links">
+        @for (item of navItems; track item.label) {
+          @if (item.routerLink) {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [routerLink]="item.routerLink">
+              <span>{{ item.label }}</span>
+              @if (item.hasChevron) {
+                <span class="ts-nav__caret" aria-hidden="true">▾</span>
+              }
+            </a>
+          } @else {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [href]="item.href">
+              <span>{{ item.label }}</span>
+              @if (item.hasChevron) {
+                <span class="ts-nav__caret" aria-hidden="true">▾</span>
+              }
+            </a>
+          }
+        }
+      </div>
+
+      <div class="ts-nav__actions">
+        <label class="ts-search" for="site-search">
+          <span class="ts-visually-hidden">Buscar productos</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="site-search" type="search" placeholder="Buscar productos...">
+        </label>
+
+        <a class="ts-nav__dashboard-button" routerLink="/dashboard">Ingresar dashboard</a>
+
+        <button class="ts-icon-button" type="button" aria-label="Mi cuenta" (click)="openAuthModal()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21a8 8 0 1 0-16 0"></path>
+            <circle cx="12" cy="8" r="4"></circle>
+          </svg>
+        </button>
+
+        <a class="ts-icon-button" routerLink="/carrito" aria-label="Carrito de compras" data-cart-target="primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.5 7.5H8.2L6 4H3"></path>
+            <circle cx="9" cy="19" r="1.5"></circle>
+            <circle cx="18" cy="19" r="1.5"></circle>
+          </svg>
+          <span class="ts-icon-button__badge">{{ cartCount() }}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ts-main">
+    <section class="ts-shell ts-cover-editor" id="inicio">
+      <div class="ts-cover-editor__layout" appScrollReveal revealVariant="zoom">
+        <div class="ts-cover-grid">
+          @for (slot of coverSlots; track slot.id) {
+            <article
+              class="ts-cover-card"
+              [attr.data-cover-id]="slot.id"
+              [class.ts-cover-card--wide]="slot.variant === 'wide'"
+              [class.ts-cover-card--uploaded]="!!coverPreview(slot.id)"
+            >
+              @if (isCarouselSlot(slot)) {
+                <div
+                  class="ts-cover-slider"
+                  [style.transform]="'translateX(-' + (activeMainCoverSlide() * 100) + '%)'"
+                  aria-live="polite"
+                >
+                  @for (slide of mainCoverSlides; track slide.imageUrl; let index = $index) {
+                    <div class="ts-cover-slider__item" [attr.aria-hidden]="activeMainCoverSlide() !== index">
+                      <img class="ts-cover-card__preview ts-cover-card__preview--main" [src]="slide.imageUrl" [alt]="slide.alt">
+                    </div>
+                  }
+                </div>
+              } @else {
+                <img class="ts-cover-card__preview" [src]="coverImage(slot)" [alt]="coverAlt(slot)">
+              }
+
+              @if (!showCoverEditorOverlay && isCarouselSlot(slot)) {
+                <div class="ts-cover-card__overlay ts-cover-card__overlay--indicators-only">
+                  <div class="ts-cover-card__footer ts-cover-card__footer--indicators-only">
+                    <div class="ts-cover-carousel" aria-label="Variantes de portada principal">
+                      @for (slide of mainCoverSlides; track slide.imageUrl; let index = $index) {
+                        <button
+                          class="ts-cover-carousel__dot"
+                          [class.ts-cover-carousel__dot--active]="activeMainCoverSlide() === index"
+                          type="button"
+                          [attr.aria-label]="'Mostrar variante ' + (index + 1)"
+                          (click)="setMainCoverSlide(index)"
+                        ></button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @if (showCoverEditorOverlay) {
+                <div class="ts-cover-card__overlay">
+                  <div class="ts-cover-card__header">
+                    <span class="ts-cover-card__pill">
+                      {{ slot.title }}
+                    </span>
+                    <span class="ts-cover-card__size">{{ slot.recommendedSize }}</span>
+                  </div>
+
+                  <div class="ts-cover-card__footer">
+                    <div class="ts-cover-card__actions">
+                      <label class="ts-upload-button ts-upload-button--light">
+                        {{ coverPreview(slot.id) ? 'Cambiar imagen' : 'Reemplazar referencia' }}
+                        <input type="file" accept="image/*" (change)="onCoverSelected($event, slot.id)">
+                      </label>
+
+                      @if (coverPreview(slot.id)) {
+                        <button class="ts-cover-card__link" type="button" (click)="clearCover(slot.id)">
+                          Usar referencia
+                        </button>
+                      }
+                    </div>
+
+                    @if (isCarouselSlot(slot)) {
+                      <div class="ts-cover-carousel" aria-label="Variantes de portada principal">
+                        @for (slide of mainCoverSlides; track slide.imageUrl; let index = $index) {
+                          <button
+                            class="ts-cover-carousel__dot"
+                            [class.ts-cover-carousel__dot--active]="activeMainCoverSlide() === index"
+                            type="button"
+                            [attr.aria-label]="'Mostrar variante ' + (index + 1)"
+                            (click)="setMainCoverSlide(index)"
+                          ></button>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </article>
+          }
+        </div>
+      </div>
+
+      <div class="ts-hero__trust-panel" appScrollReveal [revealDelay]="120">
+        <div class="ts-hero__trust">
+          @for (item of trustItems; track item.title) {
+            <article class="ts-trust-card">
+              <span class="ts-trust-card__icon" [innerHTML]="item.icon" aria-hidden="true"></span>
+              <div>
+                <p class="ts-trust-card__title">{{ item.title }}</p>
+                <p class="ts-trust-card__text">{{ item.desc }}</p>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="ts-section ts-section--spotlight" id="promociones" aria-label="Promociones destacadas">
+      <div class="ts-shell">
+        <div class="ts-home-spotlight">
+          <div class="ts-home-spotlight__header" appScrollReveal revealVariant="left">
+            <h2 class="ts-home-spotlight__title">Promociones</h2>
+            <a class="ts-link-action" [routerLink]="'/catalogo'">Ver todo</a>
+          </div>
+
+          @if (spotlightProducts().length) {
+            <div class="ts-home-spotlight__grid">
+              @for (product of spotlightProducts(); track product.id; let index = $index) {
+                <app-product-card
+                  appScrollReveal
+                  [product]="product"
+                  variant="spotlight"
+                  actionKind="button"
+                  [contentRouterLink]="['/catalogo', product.id]"
+                  [revealDelay]="110 + (index * 70)"
+                  actionLabelPrefix="Agregar"
+                  actionAriaSuffix="al carrito"
+                  (actionTriggered)="addToCart($event)"
+                />
+              }
+            </div>
+          } @else {
+            <p class="ts-empty-state">Cargando promociones destacadas...</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="ts-section ts-section--promos" id="ofertas">
+      <div class="ts-shell">
+        <div class="ts-section-heading ts-section-heading--split" appScrollReveal revealVariant="left">
+          <div>
+            <p class="ts-section-heading__eyebrow">Campañas activas</p>
+            <h2 class="ts-section-heading__title">Ofertas y beneficios de compra</h2>
+            <p class="ts-section-heading__text ts-section-heading__text--left">Aquí concentramos lo que sí debe empujar la portada: descuentos, envíos y campañas activas. La exploración completa se resuelve en el catálogo.</p>
+            <span class="ts-section-heading__underline ts-section-heading__underline--left" aria-hidden="true"></span>
+          </div>
+
+          <a class="ts-link-action" [routerLink]="'/catalogo'">Ver catálogo completo</a>
+        </div>
+
+        <div class="ts-promo-grid">
+          <article class="ts-promo-card ts-promo-card--flash" appScrollReveal revealVariant="left" [revealDelay]="80">
+            <div class="ts-promo-card__content">
+              <p class="ts-promo-card__eyebrow">Oferta flash</p>
+              <h2 class="ts-promo-card__title">Descuentos increíbles por tiempo limitado</h2>
+              <p class="ts-promo-card__text">Activa tu setup con promociones especiales en periféricos, audio y accesorios.</p>
+
+              <div class="ts-countdown">
+                @for (unit of countdown; track unit.label) {
+                  <div class="ts-countdown__item">
+                    <span class="ts-countdown__value">{{ unit.value }}</span>
+                    <span class="ts-countdown__label">{{ unit.label }}</span>
+                  </div>
+                }
+              </div>
+
+              <a class="ts-button ts-button--light" [routerLink]="'/catalogo'">Aprovechar en catálogo</a>
+            </div>
+
+            <div class="ts-promo-card__image-wrap">
+              <img
+                [ngSrc]="flashImageUrl"
+                alt="Set gamer en oferta flash"
+                width="900"
+                height="506"
+                loading="lazy"
+              >
+            </div>
+          </article>
+
+          <article class="ts-promo-card ts-promo-card--shipping" appScrollReveal revealVariant="right" [revealDelay]="160">
+            <div class="ts-promo-card__content">
+              <p class="ts-promo-card__eyebrow ts-promo-card__eyebrow--dark">Envío gratis</p>
+              <h2 class="ts-promo-card__title ts-promo-card__title--dark">En compras superiores a $50</h2>
+              <p class="ts-promo-card__text ts-promo-card__text--dark">Recibe tus productos en casa sin costo adicional y con seguimiento en línea.</p>
+              <a class="ts-button ts-button--primary" [routerLink]="'/catalogo'">Explorar productos</a>
+            </div>
+
+            <div class="ts-promo-card__image-wrap ts-promo-card__image-wrap--shipping">
+              <img
+                [ngSrc]="shippingImageUrl"
+                alt="Camión de reparto para envío gratis"
+                width="900"
+                height="600"
+                loading="lazy"
+              >
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ts-section ts-section--services" id="garantias">
+      <div class="ts-shell">
+        <div class="ts-service-band">
+          <div class="ts-section-heading ts-section-heading--left ts-service-band__intro" appScrollReveal revealVariant="left">
+            <p class="ts-section-heading__eyebrow">Compra con respaldo</p>
+            <h2 class="ts-section-heading__title">Confianza real antes y después de la venta</h2>
+            <p class="ts-section-heading__text ts-section-heading__text--left">Esta franja debe reforzar que no solo vendes producto: también acompañas envío, soporte, devoluciones y garantía.</p>
+            <span class="ts-section-heading__underline ts-section-heading__underline--left" aria-hidden="true"></span>
+          </div>
+
+          <div class="ts-service-grid">
+            @for (item of serviceItems; track item.title; let index = $index) {
+              <article class="ts-service-card" appScrollReveal [revealDelay]="90 + (index * 70)">
+                <span class="ts-service-card__icon" [innerHTML]="item.icon" aria-hidden="true"></span>
+                <div>
+                  <p class="ts-service-card__title">{{ item.title }}</p>
+                  <p class="ts-service-card__text">{{ item.desc }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="ts-footer" id="contacto">
+    <div class="ts-shell ts-footer__grid">
+      <div class="ts-footer__brand-block" appScrollReveal revealVariant="left">
+        <a class="ts-brand ts-brand--footer" href="#inicio" aria-label="CompuGamer Trujillo, volver al inicio">
+          <img class="ts-brand__logo" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="CompuGamer Trujillo" loading="lazy">
+        </a>
+
+        <p class="ts-footer__eyebrow">CompuGamer Trujillo</p>
+
+        <p class="ts-footer__text">
+          Tu tienda online de tecnología. Los mejores productos al mejor precio.
+        </p>
+
+        <div class="ts-footer__contact-card">
+          <p class="ts-footer__contact-title">Atención directa</p>
+          <p class="ts-footer__contact-line">JR. Diego de Almagro N° 651, tercer piso, Trujillo</p>
+          <p class="ts-footer__contact-line">WhatsApp: 934 824 168 · 967 545 216</p>
+          <p class="ts-footer__contact-line">Lun a sáb · 9:00 am a 8:00 pm</p>
+        </div>
+
+        <div class="ts-footer__socials">
+          @for (social of socialLinks; track social.label) {
+            <button class="ts-social" type="button" [attr.aria-label]="social.label">{{ social.short }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="ts-footer__newsletter-block" appScrollReveal revealVariant="zoom" [revealDelay]="90">
+        <p class="ts-footer__heading">Suscríbete a nuestro newsletter</p>
+        <p class="ts-footer__text">Recibe ofertas exclusivas, novedades y más.</p>
+
+        <div class="ts-newsletter">
+          <label class="ts-visually-hidden" for="newsletter-email">Correo electrónico</label>
+          <input id="newsletter-email" type="email" placeholder="Tu correo electrónico">
+          <button class="ts-button ts-button--primary" type="button">Suscribirme</button>
+        </div>
+      </div>
+
+      @for (section of footerSections; track section.title; let index = $index) {
+        <div class="ts-footer__nav-block" appScrollReveal [revealDelay]="150 + (index * 70)">
+          <p class="ts-footer__heading">{{ section.title }}</p>
+          <ul class="ts-footer__links">
+            @for (link of section.links; track link.label) {
+              <li><a class="ts-footer__link" [href]="link.href">{{ link.label }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="ts-footer__bottom">
+      <div class="ts-shell ts-footer__bottom-inner">
+        <p class="ts-footer__copy">© {{ footerYear }} CompuGamer Trujillo. Todos los derechos reservados.</p>
+        <p class="ts-footer__credit">Hecho y elaborado por Codliyp · JCV Code · ETC</p>
+      </div>
+    </div>
+  </footer>
+</div>

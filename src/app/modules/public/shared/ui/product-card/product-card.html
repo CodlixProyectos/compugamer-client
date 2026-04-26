@@ -1,0 +1,152 @@
+<article
+  class="ts-product-card"
+  [class.ts-product-card--spotlight]="variant() === 'spotlight'"
+  [class.ts-product-card--catalog]="variant() === 'catalog'"
+>
+  @if (showBadge() && product().badge) {
+    <span
+      class="ts-product-card__badge"
+      [class.ts-product-card__badge--offer]="product().badgeTone === 'offer'"
+      [class.ts-product-card__badge--success]="product().badgeTone === 'success'"
+      [class.ts-product-card__badge--accent]="product().badgeTone === 'accent'"
+      [class.ts-product-card__badge--warning]="product().badgeTone === 'warning'"
+      [class.ts-product-card__badge--neutral]="product().badgeTone === 'neutral'"
+    >
+      {{ product().badge }}
+    </span>
+  }
+
+  @if (contentRouterLink()) {
+    <a class="ts-product-card__media-link" [routerLink]="contentRouterLink() ?? '/catalogo'" [attr.aria-label]="'Ver detalle de ' + product().name">
+      <div class="ts-product-card__image-wrap">
+        <img
+          #productImage
+          [src]="product().imageUrl"
+          [alt]="product().name"
+          width="512"
+          height="512"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+    </a>
+  } @else {
+    <div class="ts-product-card__image-wrap">
+      <img
+        #productImage
+        [src]="product().imageUrl"
+        [alt]="product().name"
+        width="512"
+        height="512"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+  }
+
+  @if (variant() === 'catalog') {
+    <div class="ts-product-card__body">
+      <div class="ts-product-card__summary">
+        <p class="ts-catalog-product__category">{{ product().category }}</p>
+        <h3 class="ts-product-card__title">
+          @if (contentRouterLink()) {
+            <a class="ts-product-card__title-link" [routerLink]="contentRouterLink() ?? '/catalogo'">{{ product().name }}</a>
+          } @else {
+            {{ product().name }}
+          }
+        </h3>
+        <p class="ts-product-card__brand">{{ product().brand }}</p>
+
+        <div class="ts-product-card__rating" aria-label="4 de 5 estrellas">
+          <span class="ts-product-card__stars" aria-hidden="true">
+            ★★★★<span class="ts-product-card__stars-off">★</span>
+          </span>
+          <span class="ts-product-card__reviews">({{ product().reviewCount ?? 0 | number }})</span>
+        </div>
+
+        @if (product().quickSpecs.length) {
+          <div class="ts-product-card__specs">
+            @for (spec of product().quickSpecs; track spec) {
+              <span class="ts-product-card__spec">{{ spec }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="ts-product-card__footer">
+        <div class="ts-product-card__pricing">
+          <strong class="ts-product-card__price">${{ product().price | number: '1.2-2' }}</strong>
+          @if (product().oldPrice != null) {
+            <span class="ts-product-card__old-price">${{ product().oldPrice | number: '1.2-2' }}</span>
+          }
+        </div>
+
+        @if (actionKind() === 'link') {
+          <a class="ts-product-card__button" [routerLink]="actionRouterLink() ?? '/catalogo'" [attr.aria-label]="actionAriaLabel()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </a>
+        } @else {
+          <button class="ts-product-card__button" type="button" [attr.aria-label]="actionAriaLabel()" (click)="triggerAction()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6h15l-1.5 7.5H8.2L6 4H3"></path>
+              <circle cx="9" cy="19" r="1.5"></circle>
+              <circle cx="18" cy="19" r="1.5"></circle>
+            </svg>
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="ts-product-card__body">
+      <p class="ts-catalog-product__category">{{ product().category }}</p>
+      <h3 class="ts-product-card__title">
+        @if (contentRouterLink()) {
+          <a class="ts-product-card__title-link" [routerLink]="contentRouterLink() ?? '/catalogo'">{{ product().name }}</a>
+        } @else {
+          {{ product().name }}
+        }
+      </h3>
+      <p class="ts-product-card__brand">{{ product().brand }}</p>
+
+      @if (product().quickSpecs.length) {
+        <div class="ts-product-card__specs">
+          @for (spec of product().quickSpecs; track spec) {
+            <span class="ts-product-card__spec">{{ spec }}</span>
+          }
+        </div>
+      }
+
+      <div class="ts-product-card__footer">
+        <div>
+          <strong class="ts-product-card__price">${{ product().price | number: '1.2-2' }}</strong>
+          @if (product().oldPrice != null) {
+            <span class="ts-product-card__old-price">${{ product().oldPrice | number: '1.2-2' }}</span>
+          }
+          @if (product().discountValue != null) {
+            <p class="ts-home-spotlight__saving">Ahorra ${{ product().discountValue | number: '1.0-0' }}</p>
+          }
+        </div>
+
+        @if (actionKind() === 'link') {
+          <a class="ts-product-card__button" [routerLink]="actionRouterLink() ?? '/catalogo'" [attr.aria-label]="actionAriaLabel()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </a>
+        } @else {
+          <button class="ts-product-card__button" type="button" [attr.aria-label]="actionAriaLabel()" (click)="triggerAction()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6h15l-1.5 7.5H8.2L6 4H3"></path>
+              <circle cx="9" cy="19" r="1.5"></circle>
+              <circle cx="18" cy="19" r="1.5"></circle>
+            </svg>
+          </button>
+        }
+      </div>
+    </div>
+  }
+</article>

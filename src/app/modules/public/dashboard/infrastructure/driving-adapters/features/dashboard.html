@@ -1,0 +1,606 @@
+<div class="ts-dashboard">
+  <div class="ts-dashboard__layout">
+    <aside class="ts-dashboard__sidebar" aria-label="Control de dashboard">
+      <div class="ts-dashboard__sidebar-head">
+        <a class="ts-dashboard__brand" routerLink="/">
+          <span class="ts-dashboard__brand-mark">CG</span>
+          <span>
+            <strong>Panel de control</strong>
+            <small>CompuGamer Trujillo</small>
+          </span>
+        </a>
+
+        <div class="ts-dashboard__session-card">
+          <span class="ts-dashboard__session-avatar">{{ sessionName().slice(0, 1).toUpperCase() }}</span>
+          <div>
+            <p class="ts-dashboard__session-name">{{ sessionName() }}</p>
+            <p class="ts-dashboard__session-email">{{ sessionEmail() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="ts-dashboard__sidebar-nav" aria-label="Secciones de control">
+        @for (item of navItems; track item.id) {
+          <button
+            class="ts-dashboard__sidebar-link"
+            [class.ts-dashboard__sidebar-link--active]="activeSection() === item.id"
+            type="button"
+            (click)="selectSection(item.id)"
+          >
+            <span class="ts-dashboard__sidebar-label">{{ item.label }}</span>
+            <span class="ts-dashboard__sidebar-hint">{{ item.hint }}</span>
+          </button>
+        }
+      </nav>
+
+      <div class="ts-dashboard__sidebar-footer">
+        <a class="ts-dashboard__ghost-link" routerLink="/catalogo">Ver tienda pública</a>
+        <button class="ts-dashboard__logout" type="button" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="ts-dashboard__workspace">
+      <header class="ts-dashboard__header-card">
+        <div>
+          <p class="ts-dashboard__eyebrow">Acceso manager</p>
+          <h1 class="ts-dashboard__section-title ts-dashboard__section-title--hero">{{ currentSectionTitle() }}</h1>
+          <p class="ts-dashboard__workspace-text">{{ currentSectionDescription() }}</p>
+        </div>
+
+        <div class="ts-dashboard__header-actions">
+          <a class="ts-dashboard__button ts-dashboard__button--primary" routerLink="/catalogo">Ir al catálogo</a>
+          <a class="ts-dashboard__button ts-dashboard__button--secondary" routerLink="/">Volver a la tienda</a>
+        </div>
+      </header>
+
+      <div class="ts-dashboard__metrics-grid">
+        @for (metric of displayMetrics(); track metric.label) {
+          <article class="ts-dashboard__metric" [class.ts-dashboard__metric--amber]="metric.tone === 'amber'" [class.ts-dashboard__metric--blue]="metric.tone === 'blue'" [class.ts-dashboard__metric--green]="metric.tone === 'green'" [class.ts-dashboard__metric--slate]="metric.tone === 'slate'">
+            <p class="ts-dashboard__metric-label">{{ metric.label }}</p>
+            <strong class="ts-dashboard__metric-value">{{ metric.value }}</strong>
+            <p class="ts-dashboard__metric-detail">{{ metric.detail }}</p>
+          </article>
+        }
+      </div>
+
+      @switch (activeSection()) {
+        @case ('stores') {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Tiendas</p>
+              <h2 class="ts-dashboard__section-title">Estado de las sedes que gestionas</h2>
+            </div>
+
+            <div class="ts-dashboard__store-grid">
+              @for (store of stores; track store.name) {
+                <article class="ts-dashboard__store-card">
+                  <div class="ts-dashboard__store-head">
+                    <div>
+                      <h3 class="ts-dashboard__store-name">{{ store.name }}</h3>
+                      <p class="ts-dashboard__store-city">{{ store.city }}</p>
+                    </div>
+
+                    <span class="ts-dashboard__store-status">{{ store.status }}</span>
+                  </div>
+
+                  <div class="ts-dashboard__store-meta">
+                    <p><strong>Encargado:</strong> {{ store.manager }}</p>
+                    <p><strong>Horario:</strong> {{ store.hours }}</p>
+                    <p><strong>Pedidos pendientes:</strong> {{ store.pendingOrders }}</p>
+                    <p><strong>Estado de stock:</strong> {{ store.stockHealth }}</p>
+                  </div>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('orders') {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Pedidos</p>
+            </div>
+
+            <div class="ts-dashboard__list-grid">
+              @for (order of orders; track order.id) {
+                <article class="ts-dashboard__queue-card">
+                  <div class="ts-dashboard__queue-top">
+                    <strong>{{ order.id }}</strong>
+                    <span class="ts-dashboard__queue-status">{{ order.status }}</span>
+                  </div>
+                  <p><strong>Cliente:</strong> {{ order.customer }}</p>
+                  <p><strong>Sede:</strong> {{ order.store }}</p>
+                  <p><strong>Total:</strong> {{ order.total }}</p>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('inventory') {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Inventario</p>
+              <h2 class="ts-dashboard__section-title">Módulo de inventario</h2>
+            </div>
+
+            <div class="ts-dashboard__subsection-nav" role="tablist" aria-label="Subsecciones de inventario">
+              @for (item of inventorySubviewItems; track item.id) {
+                <button
+                  class="ts-dashboard__subsection-button"
+                  [class.ts-dashboard__subsection-button--active]="activeInventorySubview() === item.id"
+                  type="button"
+                  (click)="selectInventorySubview(item.id)"
+                >
+                  <span class="ts-dashboard__subsection-label">{{ item.label }}</span>
+                  <span class="ts-dashboard__subsection-hint">{{ item.hint }}</span>
+                </button>
+              }
+            </div>
+          </section>
+
+          @switch (activeInventorySubview()) {
+            @case ('dashboard') {
+              <section class="ts-dashboard__section">
+                <div class="ts-dashboard__section-head">
+                  <p class="ts-dashboard__eyebrow">Dashboard</p>
+                  <h2 class="ts-dashboard__section-title">Cobertura por categoría y plan de reposición</h2>
+                </div>
+
+                <div class="ts-dashboard__inventory-grid">
+                  <article class="ts-dashboard__chart-card ts-dashboard__inventory-panel">
+                    <div class="ts-dashboard__panel-head">
+                      <h3 class="ts-dashboard__chart-title">Distribución del stock</h3>
+                      <span class="ts-dashboard__action-badge">Actual</span>
+                    </div>
+
+                    <div class="ts-dashboard__inventory-category-list">
+                      @for (category of inventoryCategories; track category.label) {
+                        <article class="ts-dashboard__inventory-category-item">
+                          <div class="ts-dashboard__inventory-category-top">
+                            <div class="ts-dashboard__inventory-category-copy">
+                              <strong>{{ category.label }}</strong>
+                              <span>{{ category.units }}</span>
+                            </div>
+                            <span class="ts-dashboard__inventory-percent">{{ category.share }}%</span>
+                          </div>
+                          <p class="ts-dashboard__inventory-copy">{{ category.hint }}</p>
+                          <div class="ts-dashboard__inventory-bar-track">
+                            <span class="ts-dashboard__inventory-bar-fill" [style.width.%]="category.share" [style.background]="category.accent"></span>
+                          </div>
+                        </article>
+                      }
+                    </div>
+                  </article>
+
+                  <article class="ts-dashboard__queue-card ts-dashboard__inventory-panel">
+                    <div class="ts-dashboard__panel-head">
+                      <h3 class="ts-dashboard__chart-title">Reposiciones priorizadas</h3>
+                      <span class="ts-dashboard__queue-status">4 activas</span>
+                    </div>
+
+                    <div class="ts-dashboard__inventory-restock-list">
+                      @for (restock of inventoryRestocks; track restock.product) {
+                        <article class="ts-dashboard__inventory-restock-item">
+                          <div class="ts-dashboard__inventory-restock-top">
+                            <div class="ts-dashboard__inventory-restock-copy">
+                              <strong>{{ restock.product }}</strong>
+                              <p>{{ restock.supplier }}</p>
+                            </div>
+
+                            <span
+                              class="ts-dashboard__inventory-priority"
+                              [class.ts-dashboard__inventory-priority--high]="restock.priority === 'Alta'"
+                              [class.ts-dashboard__inventory-priority--medium]="restock.priority === 'Media'"
+                              [class.ts-dashboard__inventory-priority--low]="restock.priority === 'Baja'"
+                            >
+                              {{ restock.priority }}
+                            </span>
+                          </div>
+
+                          <div class="ts-dashboard__inventory-restock-meta">
+                            <span>{{ restock.quantity }}</span>
+                            <span>{{ restock.eta }}</span>
+                          </div>
+                        </article>
+                      }
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section class="ts-dashboard__section">
+                <div class="ts-dashboard__section-head">
+                  <p class="ts-dashboard__eyebrow">Movimientos</p>
+                  <h2 class="ts-dashboard__section-title">Entradas y salidas recientes del almacén</h2>
+                </div>
+
+                <div class="ts-dashboard__inventory-movement-grid">
+                  @for (movement of inventoryMovements; track movement.product + movement.timestamp) {
+                    <article class="ts-dashboard__queue-card ts-dashboard__inventory-movement-item">
+                      <div class="ts-dashboard__inventory-movement-top">
+                        <div class="ts-dashboard__inventory-movement-copy">
+                          <strong>{{ movement.product }}</strong>
+                          <p>{{ movement.actor }}</p>
+                        </div>
+                        <span
+                          class="ts-dashboard__inventory-priority"
+                          [class.ts-dashboard__inventory-priority--high]="movement.type === 'Salida'"
+                          [class.ts-dashboard__inventory-priority--medium]="movement.type === 'Ajuste'"
+                          [class.ts-dashboard__inventory-priority--low]="movement.type === 'Entrada'"
+                        >
+                          {{ movement.type }}
+                        </span>
+                      </div>
+                      <p><strong>Cantidad:</strong> <span class="ts-dashboard__inventory-copy">{{ movement.quantity }}</span></p>
+                      <p><strong>Hora:</strong> {{ movement.timestamp }}</p>
+                      <p><strong>Detalle:</strong> {{ movement.action }}</p>
+                    </article>
+                  }
+                </div>
+              </section>
+            }
+
+            @case ('products') {
+              <section class="ts-dashboard__section">
+                <div class="ts-dashboard__section-head">
+                  <p class="ts-dashboard__eyebrow">Productos</p>
+                  <h2 class="ts-dashboard__section-title">Catálogo activo y stock disponible</h2>
+                </div>
+
+                <div class="ts-dashboard__inventory-table-wrap">
+                  <div class="ts-dashboard__inventory-table">
+                    <div class="ts-dashboard__inventory-row ts-dashboard__inventory-row--head">
+                      <span>Producto</span>
+                      <span>Stock</span>
+                      <span>Reservado</span>
+                      <span>Disponible</span>
+                      <span>Mínimo</span>
+                      <span>Precio</span>
+                      <span>Estado</span>
+                      <span>Movimiento</span>
+                    </div>
+
+                    @for (item of inventoryItems; track item.sku) {
+                      <article class="ts-dashboard__inventory-row">
+                        <div class="ts-dashboard__inventory-cell ts-dashboard__inventory-cell--product">
+                          <strong>{{ item.name }}</strong>
+                          <span>{{ item.sku }} · {{ item.category }} · {{ item.location }}</span>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <strong>{{ item.stock }}</strong>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <strong>{{ item.reserved }}</strong>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <strong>{{ item.available }}</strong>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <strong>{{ item.reorderPoint }}</strong>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <strong>{{ item.price }}</strong>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <span
+                            class="ts-dashboard__inventory-status"
+                            [class.ts-dashboard__inventory-status--critical]="item.status === 'Critico'"
+                            [class.ts-dashboard__inventory-status--low]="item.status === 'Bajo'"
+                            [class.ts-dashboard__inventory-status--stable]="item.status === 'Estable'"
+                          >
+                            {{ item.status }}
+                          </span>
+                        </div>
+                        <div class="ts-dashboard__inventory-cell">
+                          <span>{{ item.lastMovement }}</span>
+                        </div>
+                      </article>
+                    }
+                  </div>
+                </div>
+              </section>
+            }
+          }
+        }
+
+        @case ('landing') {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <div>
+                <p class="ts-dashboard__eyebrow">Landing</p>
+                <h2 class="ts-dashboard__section-title">Vista completa de la página inicial</h2>
+              </div>
+
+              <button
+                class="ts-dashboard__button"
+                [class.ts-dashboard__button--primary]="landingEditMode()"
+                [class.ts-dashboard__button--secondary]="!landingEditMode()"
+                type="button"
+                (click)="toggleLandingEditMode()"
+              >
+                {{ landingEditMode() ? 'Modo edición activo' : 'Activar modo edición' }}
+              </button>
+            </div>
+
+            <p class="ts-dashboard__landing-preview-note">
+              Aquí se renderiza la landing completa dentro del dashboard para revisar cómo se ve todo antes de publicar cambios.
+              @if (landingEditMode()) {
+                <strong> Haz click sobre una imagen del bloque inicial para cambiarla.</strong>
+              }
+            </p>
+
+            <div class="ts-dashboard__landing-preview-shell">
+              <div class="ts-dashboard__landing-preview">
+                <app-home class="ts-dashboard__home-preview-app"></app-home>
+              </div>
+
+              @if (landingEditMode()) {
+                <div class="ts-dashboard__landing-hotspot-layer">
+                  <div class="ts-dashboard__landing-hotspot-shell">
+                    <div class="ts-dashboard__landing-hotspot-grid">
+                      @for (slot of landingCoverSlots; track slot.id) {
+                        <label class="ts-dashboard__landing-hotspot" [class.ts-dashboard__landing-hotspot--wide]="slot.variant === 'wide'">
+                          <span class="ts-dashboard__landing-hotspot-pill">{{ slot.title }}</span>
+                          <span class="ts-dashboard__landing-hotspot-copy">
+                            {{ landingCoverPreview(slot.id) ? 'Click para reemplazar imagen' : 'Click para subir imagen' }}
+                          </span>
+                          <input type="file" accept="image/*" (change)="onLandingCoverSelected($event, slot.id)">
+                        </label>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Edición</p>
+              <h2 class="ts-dashboard__section-title">Portadas editables</h2>
+            </div>
+
+            <div class="ts-dashboard__landing-control-grid">
+              @for (slot of landingCoverSlots; track slot.id) {
+                <article class="ts-dashboard__landing-control">
+                  <div class="ts-dashboard__panel-head">
+                    <div>
+                      <h3 class="ts-dashboard__chart-title">{{ slot.title }}</h3>
+                      <p class="ts-dashboard__inventory-copy">{{ slot.description }}</p>
+                    </div>
+
+                    <span
+                      class="ts-dashboard__inventory-status"
+                      [class.ts-dashboard__inventory-status--low]="landingCoverPreview(slot.id)"
+                      [class.ts-dashboard__inventory-status--stable]="!landingCoverPreview(slot.id)"
+                    >
+                      {{ landingCoverPreview(slot.id) ? 'Personalizada' : 'Predeterminada' }}
+                    </span>
+                  </div>
+
+                  <div class="ts-dashboard__landing-meta">
+                    <span>{{ slot.recommendedSize }}</span>
+                    <span>{{ slot.variant === 'wide' ? 'Hero principal' : 'Banner secundario' }}</span>
+                  </div>
+
+                  <div class="ts-dashboard__landing-actions">
+                    <label class="ts-dashboard__landing-upload">
+                      Cambiar imagen
+                      <input type="file" accept="image/*" (change)="onLandingCoverSelected($event, slot.id)">
+                    </label>
+
+                    @if (landingCoverPreview(slot.id)) {
+                      <button class="ts-dashboard__button ts-dashboard__button--secondary" type="button" (click)="clearLandingCover(slot.id)">
+                        Usar predeterminada
+                      </button>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('campaigns') {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Campañas</p>
+              <h2 class="ts-dashboard__section-title">Promociones y empujes comerciales</h2>
+            </div>
+
+            <div class="ts-dashboard__action-grid">
+              @for (campaign of campaigns; track campaign.title) {
+                <article class="ts-dashboard__action-card">
+                  <span class="ts-dashboard__action-badge">{{ campaign.status }}</span>
+                  <h3 class="ts-dashboard__action-title">{{ campaign.title }}</h3>
+                  <p class="ts-dashboard__action-text">{{ campaign.window }} · {{ campaign.owner }}</p>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        @case ('alerts') {
+          <section class="ts-dashboard__section ts-dashboard__section--alerts">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Alertas</p>
+              <h2 class="ts-dashboard__section-title">Lo que debe revisarse hoy</h2>
+            </div>
+
+            <div class="ts-dashboard__alert-list">
+              @for (alert of alerts; track alert) {
+                <article class="ts-dashboard__alert-card">
+                  <span class="ts-dashboard__alert-dot" aria-hidden="true"></span>
+                  <p>{{ alert }}</p>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        @default {
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Ventas</p>
+              <h2 class="ts-dashboard__section-title">Comportamiento comercial de la semana</h2>
+            </div>
+
+            <div class="ts-dashboard__chart-grid">
+              <article class="ts-dashboard__chart-card ts-dashboard__chart-card--wide">
+                <div class="ts-dashboard__chart-head">
+                  <div>
+                    <p class="ts-dashboard__eyebrow">Ingresos</p>
+                    <h3 class="ts-dashboard__chart-title">Ventas por día</h3>
+                  </div>
+
+                  <div class="ts-dashboard__chart-summary">
+                    <strong>{{ weeklySalesSnapshot.total }}</strong>
+                    <span>{{ weeklySalesSnapshot.detail }}</span>
+                  </div>
+                </div>
+
+                <div class="ts-dashboard__trend-bars">
+                  @for (point of salesTrend; track point.day) {
+                    <article class="ts-dashboard__trend-point">
+                      <p class="ts-dashboard__trend-amount">{{ point.total }}</p>
+                      <div class="ts-dashboard__trend-column">
+                        <span class="ts-dashboard__trend-fill" [style.height.%]="point.relativeHeight"></span>
+                      </div>
+                      <div class="ts-dashboard__trend-footer">
+                        <strong>{{ point.shortLabel }}</strong>
+                        <span>{{ point.orders }} pedidos</span>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </article>
+
+              <article class="ts-dashboard__chart-card">
+                <div class="ts-dashboard__chart-head">
+                  <div>
+                    <p class="ts-dashboard__eyebrow">Canales</p>
+                    <h3 class="ts-dashboard__chart-title">Origen de ventas</h3>
+                  </div>
+
+                  <div class="ts-dashboard__chart-summary">
+                    <strong>4 frentes</strong>
+                    <span>Físico, web y canales directos</span>
+                  </div>
+                </div>
+
+                <div class="ts-dashboard__channel-list">
+                  @for (channel of salesChannels; track channel.label) {
+                    <article class="ts-dashboard__channel-item">
+                      <div class="ts-dashboard__channel-top">
+                        <div class="ts-dashboard__channel-copy">
+                          <strong>{{ channel.label }}</strong>
+                          <span>{{ channel.amount }}</span>
+                        </div>
+                        <strong>{{ channel.share }}%</strong>
+                      </div>
+                      <div class="ts-dashboard__channel-track">
+                        <span class="ts-dashboard__channel-fill" [style.width.%]="channel.share" [style.background]="channel.accent"></span>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="ts-dashboard__section">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Rendimiento</p>
+              <h2 class="ts-dashboard__section-title">Lo que más está empujando el negocio</h2>
+            </div>
+
+            <div class="ts-dashboard__overview-grid">
+              <article class="ts-dashboard__queue-card ts-dashboard__overview-panel">
+                <div class="ts-dashboard__panel-head">
+                  <h3 class="ts-dashboard__chart-title">Top productos</h3>
+                  <span class="ts-dashboard__action-badge">Hoy</span>
+                </div>
+
+                <div class="ts-dashboard__product-list">
+                  @for (product of topProducts; track product.name) {
+                    <article class="ts-dashboard__product-item">
+                      <div class="ts-dashboard__product-copy">
+                        <strong>{{ product.name }}</strong>
+                        <p>{{ product.category }}</p>
+                      </div>
+
+                      <div class="ts-dashboard__product-metrics">
+                        <span class="ts-dashboard__product-units">{{ product.units }} uds</span>
+                        <strong class="ts-dashboard__product-revenue">{{ product.revenue }}</strong>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </article>
+
+              <article class="ts-dashboard__queue-card ts-dashboard__overview-panel">
+                <div class="ts-dashboard__panel-head">
+                  <h3 class="ts-dashboard__chart-title">Objetivos del día</h3>
+                  <span class="ts-dashboard__queue-status">En curso</span>
+                </div>
+
+                <div class="ts-dashboard__goal-list">
+                  @for (goal of salesGoals; track goal.label) {
+                    <article class="ts-dashboard__goal-item">
+                      <div class="ts-dashboard__goal-top">
+                        <div class="ts-dashboard__goal-copy">
+                          <strong>{{ goal.label }}</strong>
+                          <span>{{ goal.hint }}</span>
+                        </div>
+                        <strong class="ts-dashboard__goal-value">{{ goal.value }}</strong>
+                      </div>
+                      <div class="ts-dashboard__goal-track">
+                        <span class="ts-dashboard__goal-fill" [style.width.%]="goal.progress" [style.background]="goal.accent"></span>
+                      </div>
+                    </article>
+                  }
+                </div>
+              </article>
+
+              <article class="ts-dashboard__queue-card ts-dashboard__overview-panel">
+                <div class="ts-dashboard__panel-head">
+                  <h3 class="ts-dashboard__chart-title">Acciones prioritarias</h3>
+                  <span class="ts-dashboard__action-badge">Hoy</span>
+                </div>
+
+                <div class="ts-dashboard__mini-action-list">
+                  @for (action of actions; track action.title) {
+                    <article class="ts-dashboard__mini-action">
+                      <div class="ts-dashboard__mini-action-top">
+                        <strong>{{ action.title }}</strong>
+                        <span class="ts-dashboard__action-badge">{{ action.badge }}</span>
+                      </div>
+                      <p>{{ action.description }}</p>
+                    </article>
+                  }
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="ts-dashboard__section ts-dashboard__section--alerts">
+            <div class="ts-dashboard__section-head">
+              <p class="ts-dashboard__eyebrow">Alertas</p>
+              <h2 class="ts-dashboard__section-title">Pendientes de hoy</h2>
+            </div>
+
+            <div class="ts-dashboard__alert-list">
+              @for (alert of alerts; track alert) {
+                <article class="ts-dashboard__alert-card">
+                  <span class="ts-dashboard__alert-dot" aria-hidden="true"></span>
+                  <p>{{ alert }}</p>
+                </article>
+              }
+            </div>
+          </section>
+        }
+      }
+    </main>
+  </div>
+</div>

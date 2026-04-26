@@ -1,0 +1,74 @@
+@if (authModalStore.isOpen()) {
+  <div class="ts-auth-modal" (click)="close()" (keydown.escape)="close()">
+    <div
+      class="ts-auth-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+      tabindex="-1"
+      (click)="$event.stopPropagation()"
+    >
+      <section class="ts-auth-panel">
+        <div class="ts-auth-panel__intro">
+          <p class="ts-auth-panel__eyebrow">Mi cuenta</p>
+          <h2 class="ts-auth-panel__title" id="auth-modal-title">{{ modalTitle() }}</h2>
+          <p class="ts-auth-panel__text">{{ helperText() }}</p>
+
+          <div class="ts-auth-panel__benefits">
+            <p>Guarda tus pedidos y revisa el estado de pago.</p>
+            <p>Completa tus compras más rápido en futuras visitas.</p>
+            <p>Mantén tus datos listos para comprobantes y soporte.</p>
+          </div>
+        </div>
+
+        <div class="ts-auth-panel__form-wrap">
+          <div class="ts-auth-panel__header">
+            <div class="ts-auth-switch" role="tablist" aria-label="Opciones de autenticación">
+              <button class="ts-auth-switch__item" [class.ts-auth-switch__item--active]="isLoginMode()" type="button" (click)="switchMode('login')">Ingresar</button>
+              <button class="ts-auth-switch__item" [class.ts-auth-switch__item--active]="!isLoginMode()" type="button" (click)="switchMode('register')">Registrarme</button>
+            </div>
+
+            <button class="ts-auth-panel__close" type="button" (click)="close()" aria-label="Cerrar modal de acceso">Cerrar</button>
+          </div>
+
+          <form class="ts-auth-form" [formGroup]="authForm" (ngSubmit)="submit()">
+            @if (!isLoginMode()) {
+              <label class="ts-auth-field">
+                <span>Nombre completo</span>
+                <input type="text" formControlName="fullName" placeholder="Tu nombre completo">
+              </label>
+
+              @if (authForm.controls.fullName.invalid && authForm.controls.fullName.touched) {
+                <p class="ts-auth-field__error">Ingresa un nombre válido.</p>
+              }
+            }
+
+            <label class="ts-auth-field">
+              <span>Correo</span>
+              <input type="email" formControlName="email" placeholder="correo@ejemplo.com">
+            </label>
+
+            @if (authForm.controls.email.invalid && authForm.controls.email.touched) {
+              <p class="ts-auth-field__error">Escribe un correo válido.</p>
+            }
+
+            <label class="ts-auth-field">
+              <span>Contraseña</span>
+              <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+            </label>
+
+            @if (authForm.controls.password.invalid && authForm.controls.password.touched) {
+              <p class="ts-auth-field__error">La contraseña debe tener al menos 6 caracteres.</p>
+            }
+
+            <button class="ts-auth-form__submit" type="submit">{{ submitLabel() }}</button>
+
+            @if (feedbackMessage()) {
+              <p class="ts-auth-form__success" aria-live="polite">{{ feedbackMessage() }}</p>
+            }
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+}

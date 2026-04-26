@@ -1,0 +1,359 @@
+<div class="ts-home">
+  <div class="ts-topbar">
+    <div class="ts-shell ts-topbar__inner">
+      <p class="ts-topbar__item">Envíos gratis en compras superiores a $50</p>
+      <p class="ts-topbar__item">Atención al cliente</p>
+      <p class="ts-topbar__item">Soporte 24/7</p>
+    </div>
+  </div>
+
+  <nav class="ts-nav" aria-label="Principal">
+    <div class="ts-shell ts-nav__inner">
+      <a class="ts-brand ts-brand--header" routerLink="/" aria-label="CompuGamer Trujillo, volver al inicio">
+        <span class="ts-brand__mark ts-brand__mark--logo" aria-hidden="true">
+          <img class="ts-brand__icon" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="" loading="eager">
+        </span>
+        <span>
+          <span class="ts-brand__wordmark">
+            <span>COMPU</span><span>GAMER</span>
+          </span>
+          <span class="ts-brand__tagline">Trujillo</span>
+        </span>
+      </a>
+
+      <div class="ts-nav__links">
+        @for (item of navItems; track item.label) {
+          @if (item.routerLink) {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [routerLink]="item.routerLink">{{ item.label }}</a>
+          } @else {
+            <a class="ts-nav__link" [class.ts-nav__link--active]="item.active" [href]="item.href">{{ item.label }}</a>
+          }
+        }
+      </div>
+
+      <div class="ts-nav__actions">
+        <label class="ts-search" for="cart-search">
+          <span class="ts-visually-hidden">Buscar productos</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="cart-search" type="search" placeholder="Buscar productos...">
+        </label>
+
+        <button class="ts-icon-button" type="button" aria-label="Mi cuenta" (click)="openAuthModal()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21a8 8 0 1 0-16 0"></path>
+            <circle cx="12" cy="8" r="4"></circle>
+          </svg>
+        </button>
+
+        <a class="ts-icon-button" routerLink="/carrito" aria-label="Carrito de compras" data-cart-target="primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.5 7.5H8.2L6 4H3"></path>
+            <circle cx="9" cy="19" r="1.5"></circle>
+            <circle cx="18" cy="19" r="1.5"></circle>
+          </svg>
+          <span class="ts-icon-button__badge">{{ cartCount() }}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ts-main">
+    <section class="ts-section ts-section--cart">
+      <div class="ts-shell">
+        <div class="ts-section-heading ts-section-heading--split ts-section-heading--compact">
+          <div>
+            <p class="ts-section-heading__eyebrow">Tu compra</p>
+            <h1 class="ts-section-heading__title">Carrito</h1>
+          </div>
+
+          @if (!isEmpty()) {
+            <button class="ts-button ts-button--secondary" type="button" (click)="clear()">Vaciar carrito</button>
+          }
+        </div>
+
+        @if (isEmpty()) {
+          <div class="ts-cart-empty">
+            <p class="ts-empty-state">Tu carrito está vacío. Agrega productos desde la portada, el catálogo o el detalle.</p>
+            <a class="ts-button ts-button--primary" routerLink="/catalogo">Ir al catálogo</a>
+          </div>
+        } @else {
+          <div class="ts-cart-layout">
+            <div class="ts-cart-list">
+              @for (item of items(); track item.id) {
+                <article class="ts-cart-item">
+                  <div class="ts-cart-item__media">
+                    <img [src]="item.imageUrl" [alt]="item.name" width="220" height="220" loading="lazy" decoding="async">
+                  </div>
+
+                  <div class="ts-cart-item__content">
+                    <p class="ts-section-heading__eyebrow">{{ item.category }}</p>
+                    <h2 class="ts-cart-item__title">{{ item.name }}</h2>
+                    <p class="ts-cart-item__brand">{{ item.brand }}</p>
+
+                    <div class="ts-cart-item__controls">
+                      <button class="ts-cart-item__step" type="button" (click)="decrement(item.id)" [attr.aria-label]="'Disminuir cantidad de ' + item.name">-</button>
+                      <span class="ts-cart-item__quantity">{{ item.quantity }}</span>
+                      <button class="ts-cart-item__step" type="button" (click)="increment(item.id)" [attr.aria-label]="'Aumentar cantidad de ' + item.name">+</button>
+                    </div>
+                  </div>
+
+                  <div class="ts-cart-item__summary">
+                    <strong class="ts-cart-item__price">${{ item.price | number: '1.2-2' }}</strong>
+                    <p class="ts-cart-item__subtotal">Subtotal: ${{ item.price * item.quantity | number: '1.2-2' }}</p>
+                    <button class="ts-button ts-button--secondary" type="button" (click)="remove(item.id)">Quitar</button>
+                  </div>
+                </article>
+              }
+            </div>
+
+            <aside class="ts-cart-summary">
+              <p class="ts-section-heading__eyebrow">Resumen</p>
+              <h2 class="ts-cart-summary__title">Tu pedido</h2>
+
+              <div class="ts-cart-summary__rows">
+                <div class="ts-cart-summary__row">
+                  <span>Productos</span>
+                  <strong>{{ cartCount() }}</strong>
+                </div>
+                <div class="ts-cart-summary__row">
+                  <span>Subtotal</span>
+                  <strong>${{ subtotal() | number: '1.2-2' }}</strong>
+                </div>
+                <div class="ts-cart-summary__row">
+                  <span>Envío</span>
+                  <strong>Gratis</strong>
+                </div>
+                <div class="ts-cart-summary__row ts-cart-summary__row--total">
+                  <span>Total</span>
+                  <strong>${{ orderTotal() | number: '1.2-2' }}</strong>
+                </div>
+              </div>
+
+              <button class="ts-button ts-button--primary" type="button" (click)="openPaymentFlow()">Continuar compra</button>
+              <a class="ts-button ts-button--secondary" routerLink="/catalogo">Seguir comprando</a>
+            </aside>
+          </div>
+
+          @if (isPaymentOpen()) {
+            <div class="ts-payment-modal" (click)="resetPaymentFlow()" (keydown.escape)="resetPaymentFlow()">
+              <div
+                class="ts-payment-modal__dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="payment-sheet-title"
+                aria-describedby="payment-sheet-description"
+                tabindex="-1"
+                (click)="$event.stopPropagation()"
+              >
+                <div class="ts-payment-sheet">
+                  <div class="ts-payment-sheet__header">
+                    <div>
+                      <p class="ts-section-heading__eyebrow">Pasarela demo</p>
+                      <h3 class="ts-payment-sheet__title" id="payment-sheet-title">Elige como pagar</h3>
+                      <p class="ts-payment-sheet__subtitle" id="payment-sheet-description">Revisa el total, selecciona el metodo y confirma tu pago desde este modal.</p>
+                    </div>
+
+                    <button class="ts-button ts-button--secondary ts-payment-sheet__action" type="button" (click)="resetPaymentFlow()">Cerrar</button>
+                  </div>
+
+                  <div class="ts-payment-sheet__layout">
+                    <div class="ts-payment-sheet__aside">
+                      <div class="ts-payment-sheet__summary">
+                        <p class="ts-section-heading__eyebrow">Total actual</p>
+                        <strong class="ts-payment-sheet__amount">${{ orderTotal() | number: '1.2-2' }}</strong>
+                        <p class="ts-payment-sheet__hint">Selecciona la opcion que mas te acomode para cerrar esta compra demo.</p>
+                      </div>
+
+                      <div class="ts-payment-method-list" role="list" aria-label="Metodos de pago disponibles">
+                        @for (paymentOption of paymentOptions(); track paymentOption.id) {
+                          <button
+                            class="ts-payment-method"
+                            [class.ts-payment-method--active]="selectedPaymentOptionId() === paymentOption.id"
+                            type="button"
+                            (click)="selectPaymentOption(paymentOption.id)"
+                            [attr.aria-pressed]="selectedPaymentOptionId() === paymentOption.id"
+                          >
+                            <span class="ts-payment-method__label">{{ paymentOption.label }}</span>
+                            <span class="ts-payment-method__description">{{ paymentOption.shortDescription }}</span>
+                          </button>
+                        }
+                      </div>
+                    </div>
+
+                    @if (selectedPaymentOption(); as paymentOption) {
+                      <div class="ts-payment-sheet__content">
+                        @if (!isPaymentConfirmed()) {
+                          <article
+                            class="ts-payment-card"
+                            [class.ts-payment-card--with-qr]="paymentOption.kind === 'qr' && paymentOption.qrImageUrl != null"
+                          >
+                            @if (paymentOption.kind === 'qr' && paymentOption.qrImageUrl) {
+                              <div class="ts-payment-card__qr">
+                                <img
+                                  [ngSrc]="paymentOption.qrImageUrl"
+                                  [alt]="'QR demo de ' + paymentOption.label"
+                                  width="240"
+                                  height="272"
+                                  loading="lazy"
+                                >
+                              </div>
+                            }
+
+                            <div class="ts-payment-card__content">
+                              <h4 class="ts-payment-card__title">{{ paymentOption.label }}</h4>
+                              <p class="ts-payment-card__text">{{ paymentOption.description }}</p>
+
+                              <div class="ts-payment-card__meta">
+                                @if (paymentOption.destinationLabel && paymentOption.destinationValue) {
+                                  <div>
+                                    <span>{{ paymentOption.destinationLabel }}</span>
+                                    <strong>{{ paymentOption.destinationValue }}</strong>
+                                  </div>
+                                }
+
+                                @if (paymentOption.beneficiary) {
+                                  <div>
+                                    <span>Titular</span>
+                                    <strong>{{ paymentOption.beneficiary }}</strong>
+                                  </div>
+                                }
+                              </div>
+
+                              <ul class="ts-payment-card__steps">
+                                @for (instruction of paymentOption.instructions; track instruction) {
+                                  <li>{{ instruction }}</li>
+                                }
+                              </ul>
+
+                              <p class="ts-payment-card__note">{{ paymentOption.note }}</p>
+
+                              @if (paymentOption.requiresReceiptUpload) {
+                                <div class="ts-payment-upload">
+                                  <div class="ts-payment-upload__header">
+                                    <p class="ts-payment-upload__label">{{ paymentOption.receiptUploadLabel || 'Sube tu comprobante' }}</p>
+
+                                    @if (uploadedReceiptName()) {
+                                      <button class="ts-payment-upload__clear" type="button" (click)="clearReceipt()">Quitar</button>
+                                    }
+                                  </div>
+
+                                  <p class="ts-payment-upload__hint">{{ paymentOption.receiptUploadHint || 'Adjunta una captura o PDF del pago realizado.' }}</p>
+
+                                  <label class="ts-payment-upload__dropzone">
+                                    <input
+                                      class="ts-payment-upload__input"
+                                      type="file"
+                                      [attr.accept]="paymentOption.receiptAcceptedFormats || '.jpg,.jpeg,.png,.webp,.pdf'"
+                                      (change)="onReceiptSelected($event)"
+                                    >
+
+                                    @if (uploadedReceiptName()) {
+                                      <span class="ts-payment-upload__file-name">{{ uploadedReceiptName() }}</span>
+                                      <span class="ts-payment-upload__file-meta">{{ uploadedReceiptSizeLabel() }}</span>
+                                    } @else {
+                                      <span class="ts-payment-upload__placeholder">Haz clic para subir tu comprobante</span>
+                                      <span class="ts-payment-upload__file-meta">JPG, PNG, WEBP o PDF</span>
+                                    }
+                                  </label>
+
+                                  @if (receiptValidationMessage()) {
+                                    <p class="ts-payment-upload__error" role="alert">{{ receiptValidationMessage() }}</p>
+                                  }
+                                </div>
+                              }
+
+                              <button class="ts-button ts-button--primary" type="button" (click)="confirmPayment()">{{ paymentOption.confirmLabel }}</button>
+                            </div>
+                          </article>
+                        } @else {
+                          <article class="ts-payment-confirmed" aria-live="polite">
+                            <p class="ts-payment-confirmed__eyebrow">Pago registrado</p>
+                            <h4 class="ts-payment-confirmed__title">Pedido listo para validacion</h4>
+                            <p class="ts-payment-confirmed__text">
+                              Elegiste <strong>{{ paymentOption.label }}</strong> por un total de
+                              <strong>${{ orderTotal() | number: '1.2-2' }}</strong>.
+                            </p>
+                            @if (uploadedReceiptName()) {
+                              <p class="ts-payment-confirmed__text">Comprobante adjunto: <strong>{{ uploadedReceiptName() }}</strong>.</p>
+                            }
+                            <p class="ts-payment-confirmed__text">Este paso es demo: puedes usarlo como base para integrar una pasarela real despues.</p>
+                            <div class="ts-payment-confirmed__actions">
+                              <a class="ts-button ts-button--whatsapp" [href]="whatsappCheckoutLink()" target="_blank" rel="noreferrer">Ir al WhatsApp</a>
+                              <button class="ts-button ts-button--secondary" type="button" (click)="selectPaymentOption(paymentOption.id)">Elegir otro metodo</button>
+                              <button class="ts-button ts-button--primary" type="button" (click)="resetPaymentFlow()">Listo</button>
+                            </div>
+                          </article>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="ts-footer" id="contacto">
+    <div class="ts-shell ts-footer__grid">
+      <div class="ts-footer__brand-block">
+        <a class="ts-brand ts-brand--footer" routerLink="/" aria-label="CompuGamer Trujillo, volver al inicio">
+          <img class="ts-brand__logo" ngSrc="/IMAGENES/logo-ui.png" width="176" height="117" alt="CompuGamer Trujillo" loading="lazy">
+        </a>
+
+        <p class="ts-footer__eyebrow">CompuGamer Trujillo</p>
+
+        <p class="ts-footer__text">
+          Tu tienda online de tecnología. Los mejores productos al mejor precio.
+        </p>
+
+        <div class="ts-footer__contact-card">
+          <p class="ts-footer__contact-title">Atención directa</p>
+          <p class="ts-footer__contact-line">JR. Diego de Almagro N° 651, tercer piso, Trujillo</p>
+          <p class="ts-footer__contact-line">WhatsApp: 934 824 168 · 967 545 216</p>
+          <p class="ts-footer__contact-line">Lun a sáb · 9:00 am a 8:00 pm</p>
+        </div>
+
+        <div class="ts-footer__socials">
+          @for (social of socialLinks; track social.label) {
+            <button class="ts-social" type="button" [attr.aria-label]="social.label">{{ social.short }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="ts-footer__newsletter-block">
+        <p class="ts-footer__heading">Suscríbete a nuestro newsletter</p>
+        <p class="ts-footer__text">Recibe ofertas exclusivas, novedades y más.</p>
+
+        <div class="ts-newsletter">
+          <label class="ts-visually-hidden" for="cart-newsletter-email">Correo electrónico</label>
+          <input id="cart-newsletter-email" type="email" placeholder="Tu correo electrónico">
+          <button class="ts-button ts-button--primary" type="button">Suscribirme</button>
+        </div>
+      </div>
+
+      @for (section of footerSections; track section.title) {
+        <div class="ts-footer__nav-block">
+          <p class="ts-footer__heading">{{ section.title }}</p>
+          <ul class="ts-footer__links">
+            @for (link of section.links; track link.label) {
+              <li><a class="ts-footer__link" [href]="link.href">{{ link.label }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="ts-footer__bottom">
+      <div class="ts-shell ts-footer__bottom-inner">
+        <p class="ts-footer__copy">© {{ footerYear }} CompuGamer Trujillo. Todos los derechos reservados.</p>
+        <p class="ts-footer__credit">Hecho y elaborado por Codliyp · JCV Code · ETC</p>
+      </div>
+    </div>
+  </footer>
+</div>

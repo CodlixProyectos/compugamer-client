@@ -1,0 +1,229 @@
+:host {
+  display: contents;
+}
+
+.ts-auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.22);
+  backdrop-filter: blur(6px);
+}
+
+.ts-auth-modal__dialog {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.22);
+}
+
+.ts-auth-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.05fr);
+  gap: 0;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.ts-auth-panel__intro {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 38%),
+    linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.ts-auth-panel__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b45309;
+}
+
+.ts-auth-panel__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.05;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.ts-auth-panel__text,
+.ts-auth-panel__benefits p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.ts-auth-panel__benefits {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid #dbe7f3;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.ts-auth-panel__form-wrap {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.ts-auth-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.ts-auth-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.28rem;
+  border-radius: 999px;
+  background: #eff6ff;
+}
+
+.ts-auth-switch__item,
+.ts-auth-panel__close,
+.ts-auth-form__submit {
+  font: inherit;
+}
+
+.ts-auth-switch__item {
+  min-height: 38px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #1e3a8a;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ts-auth-switch__item--active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 12px 22px rgba(37, 99, 235, 0.2);
+}
+
+.ts-auth-panel__close {
+  min-height: 38px;
+  padding: 0 0.95rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ts-auth-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.ts-auth-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ts-auth-field span {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ts-auth-field input {
+  min-height: 46px;
+  padding: 0 0.95rem;
+  border: 1px solid #d5deea;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.ts-auth-field input::placeholder {
+  color: #94a3b8;
+}
+
+.ts-auth-field__error,
+.ts-auth-form__success {
+  margin: -0.25rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.ts-auth-field__error {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.ts-auth-form__submit {
+  min-height: 46px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.2);
+}
+
+.ts-auth-form__success {
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+@media (max-width: 820px) {
+  .ts-auth-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ts-auth-modal {
+    padding: 0.7rem;
+  }
+
+  .ts-auth-modal__dialog {
+    max-height: calc(100vh - 1.4rem);
+    border-radius: 22px;
+  }
+
+  .ts-auth-panel,
+  .ts-auth-panel__intro,
+  .ts-auth-panel__form-wrap {
+    border-radius: 22px;
+  }
+
+  .ts-auth-panel__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ts-auth-switch {
+    width: 100%;
+  }
+}
